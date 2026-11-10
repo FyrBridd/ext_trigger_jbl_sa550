@@ -148,6 +148,13 @@ def drc(pcb_path, parity: bool = False) -> dict:
     return report
 
 
+def refill_zones(pcb_path) -> None:
+    """Fill the board's copper pours with KiCad's own filler and save the result."""
+    with tempfile.TemporaryDirectory() as tmp:
+        _cli("pcb", "drc", "--refill-zones", "--save-board", "--format", "json",
+             "-o", pathlib.Path(tmp) / "drc.json", pcb_path)
+
+
 def render(pcb_path, out_png, side: str = "top", width: int = 1800, height: int = 700) -> None:
     """A 3D-style picture of the board from one side."""
     pathlib.Path(out_png).parent.mkdir(parents=True, exist_ok=True)

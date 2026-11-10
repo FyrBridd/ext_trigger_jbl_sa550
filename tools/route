@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Re-run the autorouter and ground stitching, rewriting hardware/design/routes.json.
+# Only needed after changing the circuit, the placement or the hand-routed tracks;
+# the board itself is rebuilt from routes.json without this.
+#
+# Freerouting 2.5.0 (Java build; its native command-line build crashes while routing)
+# and a Java 25 runtime are downloaded once into .cache/router and checked by hash.
+set -euo pipefail
+repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cache="$repo/.cache/router"
+mkdir -p "$cache"
+
+fetch() {  # fetch <url> <file> <sha256>
+  if [ ! -f "$cache/$2" ]; then curl -fsSL -o "$cache/$2" "$1"; fi
+  echo "$3  $cache/$2" | sha256sum -c --quiet
+}
+fetch https://github.com/freerouting/freerouting/releases/download/v2.5.0/freerouting-2.5.0.jar \
+      freerouting.jar f6f51bb02245e8e717f9359bd260cc9c5c0b1bc0acc8b7cb2cd5b8ffeb5de3c7
+fetch "https://api.adoptium.net/v3/binary/version/jdk-25.0.5%2B8/linux/x64/jre/hotspot/normal/eclipse" \
+      jre.tar.gz 6fac98f0c8202efc3135a9e9e42aa61963ec42d1c5cbb40caf231e7b14a24ef6
+if [ ! -x "$cache/jre/bin/java" ]; then
+  mkdir -p "$cache/jre" && tar xzf "$cache/jre.tar.gz" -C "$cache/jre" --strip-components=1
+fi
+cat > "$cache/route.sh" <<'SH'
+#!/bin/sh
+exec /router/jre/bin/java -Djava.awt.headless=true -jar /router/freerouting.jar --gui.enabled=false "$@"
+SH
+chmod +x "$cache/route.sh"
+
+docker build -q -t dongle-dev "$repo/tools" >/dev/null
+rm -f "$repo/hardware/design/routes.json"
+docker run --rm -i -u "$(id -u):$(id -g)" -e HOME=/tmp/home \
+  -v "$repo":/work -v "$cache":/router -w /work \
+  dongle-dev python -W ignore -m hardware.design.autoroute /router/route.sh "${1:-40}" \
+  | grep -E "Auto-routing stage completed|wrote|added|Error|Traceback" || true
+echo "Now run: tools/dev pytest hardware/tests -q   (KiCad's DRC is the judge, not the router's own count)"

@@ -56,3 +56,24 @@ A wire goes down through the strain-relief hole, along the underside, and up
 through its pad to be soldered on the top. The 1.0 mm drill suits stranded
 wire up to about 22 AWG; the 1.5 mm hole suits insulation up to about 1.4 mm.
 These are estimates until the owner's actual cables are measured.
+
+## How the board is routed
+
+- Three connections around the programming footprint are drawn by hand
+  (`FIXED_TRACKS` in `hardware/design/layout.py`), because the autorouter
+  cannot get all three pads out through the Tag-Connect keep-outs.
+- Everything else, ground included, is routed by Freerouting 2.5.0, run by
+  `tools/route`. Its result is saved in `hardware/design/routes.json`, and
+  the board is rebuilt from that file, so regenerating the board does not
+  need the router.
+- The router is asked for 0.26 mm clearance; the board is checked at 0.20 mm.
+  The margin is there because the router narrows some tracks in tight spots
+  and the generator widens them back to the rule widths (0.25 mm signal,
+  0.4 mm power and ground).
+- Ground pours cover both layers on top of the routed ground tracks. Stitching
+  vias between the pours are chosen by `hardware/design/stitch.py` after
+  routing and saved in the same file.
+- The router reports "unrouted" connections and "violations" of its own
+  because it counts the hand-routed tracks against its wider clearance.
+  KiCad's design rule check, run by the tests, is the authority: zero errors,
+  nothing unconnected, schematic and board in agreement.

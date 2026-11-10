@@ -132,9 +132,10 @@ def build() -> ksa.Schematic:
     for ref, part in c.PARTS.items():
         col, row, rotation = _PLACE[ref]
         extra = {"LCSC": part.lcsc} if part.lcsc else {}
-        sch.components.add(part.symbol, reference=ref, value=part.value, position=_at(col, row),
-                           rotation=rotation, footprint=part.footprint,
-                           component_uuid=symbol_uuid(ref), **extra)
+        comp = sch.components.add(part.symbol, reference=ref, value=part.value, position=_at(col, row),
+                                  rotation=rotation, footprint=part.footprint,
+                                  component_uuid=symbol_uuid(ref), **extra)
+        comp.in_bom = part.assemble   # wire pads, test pads and the programming footprint are not parts
 
     # PWR_FLAG tells KiCad's rule check that a net is driven: GND and VIN come in
     # through a connector and a diode, which KiCad does not count as power sources.

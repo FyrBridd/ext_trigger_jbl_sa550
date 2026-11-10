@@ -7,7 +7,7 @@ import pathlib
 import pcbnew
 
 from hardware.design import circuit as c
-from hardware.design import gen_sch, layout
+from hardware.design import gen_sch, kicad, layout
 
 PROJECT_DIR = pathlib.Path(__file__).resolve().parents[1] / "dongle"
 PCB_PATH = PROJECT_DIR / "dongle.kicad_pcb"
@@ -17,6 +17,12 @@ STOCK_LIBS = pathlib.Path("/usr/share/kicad/footprints")
 NOT_ASSEMBLED = pcbnew.FP_EXCLUDE_FROM_POS_FILES | pcbnew.FP_EXCLUDE_FROM_BOM
 
 mm = pcbnew.FromMM
+
+
+def net_name(name: str) -> str:
+    """The board's name for a circuit net. KiCad puts a "/" in front of nets named
+    by labels on the top sheet, and the board must match the schematic exactly."""
+    return name if name.startswith("/") else "/" + name
 
 
 def pt(x: float, y: float) -> pcbnew.VECTOR2I:
@@ -46,8 +52,22 @@ def _add_outline(board) -> None:
         board.Add(seg)
 
 
-def _set_design_rules(board) -> None:
+def _set_design_rules(board, clearance: float = layout.CLEARANCE) -> None:
     rules = board.GetDesignSettings()
+    nets = rules.m_NetSettings
+    default = nets.GetDefaultNetclass()
+    default.SetClearance(mm(clearance))
+    default.SetTrackWidth(mm(layout.TRACK_SIGNAL))
+    default.SetViaDiameter(mm(layout.VIA_DIAMETER))
+    default.SetViaDrill(mm(layout.VIA_DRILL))
+    power = pcbnew.NETCLASS("Power")
+    power.SetClearance(mm(clearance))
+    power.SetTrackWidth(mm(layout.TRACK_POWER))
+    power.SetViaDiameter(mm(layout.VIA_DIAMETER))
+    power.SetViaDrill(mm(layout.VIA_DRILL))
+    nets.SetNetclass("Power", power)
+    for name in layout.POWER_NETS:
+        nets.SetNetclassPatternAssignment(net_name(name), "Power")
     rules.m_MinClearance = mm(0.15)
     rules.m_TrackMinWidth = mm(0.15)
     rules.m_ViasMinSize = mm(0.6)
@@ -59,10 +79,19 @@ def _set_design_rules(board) -> None:
 def _add_parts(board) -> None:
     nets = {}
     for name in c.NETS:
-        net = pcbnew.NETINFO_ITEM(board, name)
+        net = pcbnew.NETINFO_ITEM(board, net_name(name))
         board.Add(net)
         nets[name] = net
     net_of_pin = {pin: nets[name] for name, pins in c.NETS.items() for pin in pins}
+
+    # A pin left unconnected on purpose still has a net of its own in KiCad, with a
+    # name KiCad makes up. Take those names from the schematic so the board matches.
+    for name, pins in kicad.export_netlist(gen_sch.PROJECT_DIR / f"{gen_sch.NAME}.kicad_sch").items():
+        if name.startswith("unconnected-"):
+            net = pcbnew.NETINFO_ITEM(board, name)
+            board.Add(net)
+            for pin in pins:
+                net_of_pin[pin] = net
 
     for ref, part in c.PARTS.items():
         x, y, rotation = layout.PLACEMENTS[ref]
@@ -70,6 +99,9 @@ def _add_parts(board) -> None:
         fp.SetReference(ref)
         fp.SetValue(part.value)
         fp.SetPath(pcbnew.KIID_PATH("/" + gen_sch.symbol_uuid(ref)))
+        if part.lcsc:
+            fp.SetField("LCSC", part.lcsc)
+            fp.GetField("LCSC").SetVisible(False)
         if not part.assemble:
             fp.SetAttributes(fp.GetAttributes() | NOT_ASSEMBLED)
         board.Add(fp)
@@ -112,10 +144,114 @@ def _add_silkscreen(board) -> None:
         _text(board, label, x + dx, y + dy, "bottom")
 
 
-def _add_tracks(board) -> None:
+def _polygon_zone(board, corners, layer) -> pcbnew.ZONE:
+    zone = pcbnew.ZONE(board)
+    zone.SetLayer(layer)
+    outline = zone.Outline()
+    outline.NewOutline()
+    for x, y in corners:
+        outline.Append(pt(x, y))
+    board.Add(zone)
+    return zone
+
+
+def _rect(x1, y1, x2, y2):
+    return [(x1, y1), (x2, y1), (x2, y2), (x1, y2)]
+
+
+def _add_keepouts(board) -> None:
+    """Rule areas for the Tag-Connect footprint (see hardware/lib/README.md)."""
+    j3 = board.FindFootprintByReference("J3")
+    pads = [p for p in j3.Pads() if p.GetNumber()]
+    ox, oy = layout.ORIGIN
+    xs = sorted({round(pcbnew.ToMM(p.GetPosition().x) - ox, 3) for p in pads})
+    ys = sorted({round(pcbnew.ToMM(p.GetPosition().y) - oy, 3) for p in pads})
+    r = pcbnew.ToMM(pads[0].GetSize().x) / 2
+
+    # Tag-Connect: nothing between the two rows of contact pads, and no other track
+    # within 0.51 mm of a pad. Each pad's own track leaves sideways, away from the
+    # other row, through a gap ("channel") in the keep-out.
+    halo = r + layout.TAG_CONNECT_PAD_CLEARANCE
+    channel = 0.5    # half-height of each pad's escape channel (a 0.4 mm track plus the router's clearance)
+    top, bottom = ys[0] - halo, ys[-1] + halo
+    areas = [
+        _rect(xs[0] + r, top, xs[-1] - r, bottom),           # between the rows
+        _rect(xs[0] - r, top, xs[-1] + r, ys[0] - r),         # beyond the first pads
+        _rect(xs[0] - r, ys[-1] + r, xs[-1] + r, bottom),     # beyond the last pads
+    ]
+    edges = [top] + [v for y in ys for v in (y - channel, y + channel)] + [bottom]
+    for y1, y2 in zip(edges[::2], edges[1::2]):   # outside each row: teeth between the channels
+        areas.append(_rect(xs[0] - halo, y1, xs[0] - r, y2))
+        areas.append(_rect(xs[-1] + r, y1, xs[-1] + halo, y2))
+    for corners in areas:
+        area = _polygon_zone(board, corners, pcbnew.F_Cu)
+        area.SetIsRuleArea(True)
+        area.SetZoneName("TC2030 pad clearance")
+        area.SetDoNotAllowTracks(True)
+        area.SetDoNotAllowVias(True)
+        area.SetDoNotAllowZoneFills(True)
+        area.SetDoNotAllowPads(False)
+        area.SetDoNotAllowFootprints(False)
+
+    # no vias anywhere under the footprint: the cable's retaining clip sits behind it
+    box = j3.GetBoundingBox(False)
+    x1, y1 = pcbnew.ToMM(box.GetLeft()) - ox, pcbnew.ToMM(box.GetTop()) - oy
+    x2, y2 = pcbnew.ToMM(box.GetRight()) - ox, pcbnew.ToMM(box.GetBottom()) - oy
+    vias = _polygon_zone(board, _rect(x1, y1, x2, y2), pcbnew.F_Cu)
+    vias.SetLayerSet(pcbnew.LSET.AllCuMask())
+    vias.SetIsRuleArea(True)
+    vias.SetZoneName("TC2030 no vias")
+    vias.SetDoNotAllowTracks(False)
+    vias.SetDoNotAllowVias(True)
+    vias.SetDoNotAllowZoneFills(False)
+    vias.SetDoNotAllowPads(False)
+    vias.SetDoNotAllowFootprints(False)
+
+
+def _add_pour_keepout(board) -> None:
+    """Keep the ground pour the distance Tag-Connect asks for from the contact pads.
+    Not given to the autorouter, which would read it as a ban on tracks too."""
+    j3 = board.FindFootprintByReference("J3")
+    pads = [p for p in j3.Pads() if p.GetNumber()]
+    ox, oy = layout.ORIGIN
+    xs = sorted({round(pcbnew.ToMM(p.GetPosition().x) - ox, 3) for p in pads})
+    ys = sorted({round(pcbnew.ToMM(p.GetPosition().y) - oy, 3) for p in pads})
+    r = pcbnew.ToMM(pads[0].GetSize().x) / 2
+    c_ = layout.TAG_CONNECT_PAD_CLEARANCE + r
+    pour = _polygon_zone(board, _rect(xs[0] - c_, ys[0] - c_, xs[-1] + c_, ys[-1] + c_), pcbnew.F_Cu)
+    pour.SetIsRuleArea(True)
+    pour.SetZoneName("TC2030 no pour near pads")
+    pour.SetDoNotAllowTracks(False)
+    pour.SetDoNotAllowVias(False)
+    pour.SetDoNotAllowZoneFills(True)
+    pour.SetDoNotAllowPads(False)
+    pour.SetDoNotAllowFootprints(False)
+
+
+
+def _add_ground_pour(board) -> None:
+    gnd = board.FindNet(net_name("GND"))
+    i = layout.GND_ZONE_INSET
+    for layer in (pcbnew.F_Cu, pcbnew.B_Cu):
+        zone = _polygon_zone(board, _rect(i, i, layout.LENGTH - i, layout.WIDTH - i), layer)
+        zone.SetNet(gnd)
+        zone.SetZoneName("GND top" if layer == pcbnew.F_Cu else "GND bottom")
+        zone.SetLocalClearance(mm(0.25))
+        zone.SetMinThickness(mm(0.2))
+        # thermal spokes on the through-hole wire pads so they can be hand-soldered;
+        # solid connection to surface-mount pads
+        zone.SetPadConnection(pcbnew.ZONE_CONNECTION_THT_THERMAL)
+        zone.SetThermalReliefGap(mm(0.3))
+        zone.SetThermalReliefSpokeWidth(mm(0.4))
+        zone.SetIslandRemovalMode(pcbnew.ISLAND_REMOVAL_MODE_ALWAYS)
+    # The pour is filled by kicad-cli after the board is saved (see main): filling
+    # from this script ignores holes, tracks and pads.
+
+
+def _add_tracks(board, tracks, vias, locked: bool = False) -> None:
     layers = {"F.Cu": pcbnew.F_Cu, "B.Cu": pcbnew.B_Cu}
-    for net_name, layer, width, points in layout.TRACKS:
-        net = board.FindNet(net_name)
+    for name, layer, width, points in tracks:
+        net = board.FindNet(net_name(name))
         for (x1, y1), (x2, y2) in zip(points, points[1:]):
             track = pcbnew.PCB_TRACK(board)
             track.SetStart(pt(x1, y1))
@@ -123,40 +259,42 @@ def _add_tracks(board) -> None:
             track.SetWidth(mm(width))
             track.SetLayer(layers[layer])
             track.SetNet(net)
+            track.SetLocked(locked)
             board.Add(track)
-    for net_name, x, y in layout.VIAS:
+    for name, x, y in vias:
         via = pcbnew.PCB_VIA(board)
         via.SetPosition(pt(x, y))
-        via.SetWidth(pcbnew.F_Cu, mm(0.6)) if _via_width_takes_layer() else via.SetWidth(mm(0.6))
-        via.SetDrill(mm(0.3))
-        via.SetNet(board.FindNet(net_name))
+        via.SetWidth(pcbnew.F_Cu, mm(layout.VIA_DIAMETER))
+        via.SetDrill(mm(layout.VIA_DRILL))
+        via.SetNet(board.FindNet(net_name(name)))
+        via.SetLocked(locked)
         board.Add(via)
 
 
-def _via_width_takes_layer() -> bool:
-    try:
-        pcbnew.PCB_VIA(None).SetWidth(pcbnew.F_Cu, 1)
-        return True
-    except TypeError:
-        return False
-
-
-def build() -> pcbnew.BOARD:
+def build(routed: bool = True) -> pcbnew.BOARD:
+    """The whole board. With routed=False it stops before tracks and the ground
+    pour: that is the board the autorouter is given."""
     board = pcbnew.NewBoard(str(PCB_PATH))
-    _set_design_rules(board)
+    _set_design_rules(board, layout.CLEARANCE if routed else layout.ROUTING_CLEARANCE)
     _add_outline(board)
     _add_parts(board)
     _add_silkscreen(board)
-    _add_tracks(board)
+    _add_keepouts(board)
+    _add_tracks(board, layout.FIXED_TRACKS, layout.FIXED_VIAS, locked=True)
+    if routed:
+        _add_tracks(board, layout.ROUTED_TRACKS + layout.GND_TRACKS, layout.ROUTED_VIAS + layout.GND_VIAS)
+        _add_pour_keepout(board)
+        _add_ground_pour(board)
     return board
 
 
 def main() -> None:
-    gen_sch.write_project_files()
+    gen_sch.main()   # the board takes its unconnected-pin net names from the schematic
     if PCB_PATH.exists():
         PCB_PATH.unlink()
     board = build()
     pcbnew.SaveBoard(str(PCB_PATH), board)
+    kicad.refill_zones(PCB_PATH)
 
 
 if __name__ == "__main__":

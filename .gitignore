@@ -8,3 +8,4 @@ hardware/dongle/*-backups/
 hardware/dongle/*.lck
 hardware/dongle/*.kicad_prl
 fp-info-cache
+.cache/

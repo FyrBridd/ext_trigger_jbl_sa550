@@ -1,0 +1,17 @@
+{
+ "code": 200,
+ "data": {
+  "componentPageInfo": {
+   "list": [
+    {
+     "componentCode": "C1337190",
+     "componentModelEn": "ATTINY412-SSNR",
+     "componentSpecificationEn": "SOIC-8",
+     "componentLibraryType": "expand",
+     "preferredComponentFlag": false,
+     "stockCount": 2142
+    }
+   ]
+  }
+ }
+}

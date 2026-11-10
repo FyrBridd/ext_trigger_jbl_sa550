@@ -17,3 +17,7 @@ hw-test:
 # Re-run the autorouter. Only after changing the circuit, placement or hand-routed tracks.
 route:
 	tools/route
+
+# Check every part on the bill of materials is in stock at JLCPCB. Run on the day of ordering.
+stock:
+	$(DEV) python tools/jlc_stock.py --bom hardware/fab/bom.csv --report hardware/fab/stock-report.md

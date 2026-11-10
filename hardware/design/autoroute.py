@@ -14,7 +14,8 @@ connection; gen_pcb then adds the ground pours on both layers over the top.
 (Leaving ground to the pours alone stranded three pads on scraps of pour.)
 
 gen_pcb then replays routes.json, so the committed board does not depend on the
-router being available or giving the same answer twice.
+router being available or giving the same answer twice. Nets in routes.json
+are named as in circuit.py.
 
 Freerouting 2.5.0 command-line build:
 https://github.com/freerouting/freerouting/releases/tag/v2.5.0
@@ -59,17 +60,17 @@ def _extract(board) -> dict:
             continue   # hand-routed wiring from layout.FIXED_TRACKS, not the router's
         if t.GetClass() == "PCB_VIA":
             x, y = rel(t.GetPosition())
-            vias.append({"net": t.GetNetname(), "x": x, "y": y})
+            vias.append({"net": gen_pcb.circuit_net(t.GetNetname()), "x": x, "y": y})
         elif t.GetClass() == "PCB_TRACK":
             # the router's optimiser necks some segments down; hold every track at its
             # net class width and let KiCad's DRC judge the clearances
             power = t.GetNetname() in {gen_pcb.net_name(n) for n in layout.POWER_NETS}
-            tracks.append({"net": t.GetNetname(), "layer": pcbnew.LayerName(t.GetLayer()),
+            tracks.append({"net": gen_pcb.circuit_net(t.GetNetname()), "layer": pcbnew.LayerName(t.GetLayer()),
                            "width": layout.TRACK_POWER if power else layout.TRACK_SIGNAL,
                            "points": [rel(t.GetStart()), rel(t.GetEnd())]})
     # The router sometimes leaves a via with nothing on the far side. Keep a via
     # only if a bottom-layer track or pad meets it (ground vias join the pour).
-    gnd = gen_pcb.net_name("GND")
+    gnd = "GND"   # routes.json holds circuit net names
     bottom_points = [p for t in tracks if t["layer"] == "B.Cu" for p in t["points"]]
     for fp in board.GetFootprints():
         for pad in fp.Pads():

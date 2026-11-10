@@ -20,10 +20,26 @@ NOT_ASSEMBLED = pcbnew.FP_EXCLUDE_FROM_POS_FILES | pcbnew.FP_EXCLUDE_FROM_BOM
 mm = pcbnew.FromMM
 
 
+_board_names: dict[str, str] = {}
+
+
 def net_name(name: str) -> str:
-    """The board's name for a circuit net. KiCad puts a "/" in front of nets named
-    by labels on the top sheet, and the board must match the schematic exactly."""
-    return name if name.startswith("/") else "/" + name
+    """The board's name for a circuit net: whatever KiCad calls that net in the
+    schematic, so that board and schematic match exactly. KiCad puts a "/" in
+    front of nets named by a label on the sheet ("/UART_TX") and none in front
+    of nets named by a power symbol ("GND", "+3V3")."""
+    if not _board_names:
+        exported = kicad.export_netlist(gen_sch.PROJECT_DIR / f"{gen_sch.NAME}.kicad_sch")
+        by_pins = {frozenset(pins): kicad_name for kicad_name, pins in exported.items()}
+        for circuit_name, pins in c.NETS.items():
+            _board_names[circuit_name] = by_pins[frozenset(pins)]
+    return _board_names[name.lstrip("/")]
+
+
+def circuit_net(board_name: str) -> str:
+    """The reverse of net_name."""
+    net_name("GND")   # make sure the table is loaded
+    return next(k for k, v in _board_names.items() if v == board_name)
 
 
 def pt(x: float, y: float) -> pcbnew.VECTOR2I:
@@ -336,7 +352,8 @@ def build(routed: bool = True) -> pcbnew.BOARD:
 
 
 def main() -> None:
-    gen_sch.main()   # the board takes its unconnected-pin net names from the schematic
+    gen_sch.main()   # the board takes its net names from the schematic
+    _board_names.clear()
     if PCB_PATH.exists():
         PCB_PATH.unlink()
     board = build()

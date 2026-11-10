@@ -84,8 +84,8 @@ def test_pad_nets_match_circuit(board):
         for pad in fp.Pads():
             if pad.GetNumber() and pad.GetNetname() and not pad.GetNetname().startswith("unconnected-"):
                 got.setdefault(pad.GetNetname(), set()).add((fp.GetReference(), pad.GetNumber()))
-    # board nets carry KiCad's leading "/" so that they match the schematic's names
-    assert got == {"/" + n: set(p) for n, p in c.NETS.items()}
+    # board nets are named as KiCad names them in the schematic
+    assert got == {gen_pcb.net_name(n): set(p) for n, p in c.NETS.items()}
 
 
 def test_footprints_are_linked_to_their_symbols(board):
@@ -134,7 +134,7 @@ def test_silkscreen_text_is_printable_by_jlcpcb(board):
 
 # --- routing -----------------------------------------------------------------
 
-WIDE_NETS = {"/TRIG_IN", "/TRIG_R", "/VIN", "/+3V3", "/GND"}
+WIDE_NETS = {"/TRIG_IN", "/TRIG_R", "/VIN", "+3V3", "GND"}
 
 
 def test_drc_clean_with_schematic_parity(board):
@@ -169,7 +169,7 @@ def test_no_vias_in_programming_footprint(board):
 def test_ground_pour_on_both_layers(board):
     layers = set()
     for z in board.Zones():
-        if not z.GetIsRuleArea() and z.GetNetname() == "/GND":
+        if not z.GetIsRuleArea() and z.GetNetname() == "GND":
             layers |= {layer for layer in (pcbnew.F_Cu, pcbnew.B_Cu) if z.IsOnLayer(layer)}
     assert layers == {pcbnew.F_Cu, pcbnew.B_Cu}
 

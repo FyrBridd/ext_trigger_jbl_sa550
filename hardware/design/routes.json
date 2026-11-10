@@ -1,7 +1,7 @@
 {
  "tracks": [
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -16,7 +16,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -31,7 +31,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -46,7 +46,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -61,7 +61,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -76,7 +76,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -91,7 +91,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -106,7 +106,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -121,7 +121,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -136,7 +136,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -151,7 +151,7 @@
    ]
   },
   {
-   "net": "/C2P",
+   "net": "C2P",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -166,7 +166,7 @@
    ]
   },
   {
-   "net": "/C2P",
+   "net": "C2P",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -181,7 +181,7 @@
    ]
   },
   {
-   "net": "/C2P",
+   "net": "C2P",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -196,7 +196,7 @@
    ]
   },
   {
-   "net": "/C2P",
+   "net": "C2P",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -211,7 +211,7 @@
    ]
   },
   {
-   "net": "/C2P",
+   "net": "C2P",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -226,7 +226,7 @@
    ]
   },
   {
-   "net": "/C2P",
+   "net": "C2P",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -241,7 +241,7 @@
    ]
   },
   {
-   "net": "/C2P",
+   "net": "C2P",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -256,7 +256,7 @@
    ]
   },
   {
-   "net": "/DBG",
+   "net": "DBG",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -271,7 +271,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -286,7 +286,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -301,7 +301,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -316,7 +316,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -331,7 +331,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -346,7 +346,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -361,7 +361,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -376,7 +376,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -391,7 +391,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -406,7 +406,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -421,7 +421,7 @@
    ]
   },
   {
-   "net": "/RS232_RX",
+   "net": "RS232_RX",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -436,7 +436,7 @@
    ]
   },
   {
-   "net": "/RS232_RX",
+   "net": "RS232_RX",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -451,7 +451,7 @@
    ]
   },
   {
-   "net": "/RS232_RX",
+   "net": "RS232_RX",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -466,7 +466,7 @@
    ]
   },
   {
-   "net": "/RS232_RX",
+   "net": "RS232_RX",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -481,7 +481,7 @@
    ]
   },
   {
-   "net": "/SPARE",
+   "net": "SPARE",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -496,7 +496,7 @@
    ]
   },
   {
-   "net": "/SPARE",
+   "net": "SPARE",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -511,7 +511,7 @@
    ]
   },
   {
-   "net": "/TRIG_R",
+   "net": "TRIG_R",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -526,7 +526,7 @@
    ]
   },
   {
-   "net": "/TRIG_R",
+   "net": "TRIG_R",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -541,7 +541,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -556,7 +556,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -571,7 +571,7 @@
    ]
   },
   {
-   "net": "/UART_TX",
+   "net": "UART_TX",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -586,7 +586,7 @@
    ]
   },
   {
-   "net": "/UART_TX",
+   "net": "UART_TX",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -601,7 +601,7 @@
    ]
   },
   {
-   "net": "/UART_TX",
+   "net": "UART_TX",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -616,7 +616,7 @@
    ]
   },
   {
-   "net": "/UART_TX",
+   "net": "UART_TX",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -631,7 +631,7 @@
    ]
   },
   {
-   "net": "/UART_TX",
+   "net": "UART_TX",
    "layer": "B.Cu",
    "width": 0.25,
    "points": [
@@ -646,7 +646,7 @@
    ]
   },
   {
-   "net": "/VIN",
+   "net": "VIN",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -661,7 +661,7 @@
    ]
   },
   {
-   "net": "/VIN",
+   "net": "VIN",
    "layer": "B.Cu",
    "width": 0.4,
    "points": [
@@ -676,7 +676,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -691,7 +691,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -706,7 +706,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -721,7 +721,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -736,7 +736,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -751,7 +751,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -766,7 +766,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -781,7 +781,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -796,7 +796,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -811,7 +811,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -826,7 +826,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -841,7 +841,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -856,7 +856,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -871,7 +871,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -886,7 +886,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -901,7 +901,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -916,7 +916,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -931,7 +931,7 @@
    ]
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -946,7 +946,7 @@
    ]
   },
   {
-   "net": "/C1M",
+   "net": "C1M",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -961,7 +961,7 @@
    ]
   },
   {
-   "net": "/C1M",
+   "net": "C1M",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -976,7 +976,7 @@
    ]
   },
   {
-   "net": "/C1P",
+   "net": "C1P",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -991,7 +991,7 @@
    ]
   },
   {
-   "net": "/C1P",
+   "net": "C1P",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1006,7 +1006,7 @@
    ]
   },
   {
-   "net": "/C2M",
+   "net": "C2M",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1021,7 +1021,7 @@
    ]
   },
   {
-   "net": "/C2M",
+   "net": "C2M",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1036,7 +1036,7 @@
    ]
   },
   {
-   "net": "/C2M",
+   "net": "C2M",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1051,7 +1051,7 @@
    ]
   },
   {
-   "net": "/C2P",
+   "net": "C2P",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1066,7 +1066,7 @@
    ]
   },
   {
-   "net": "/C2P",
+   "net": "C2P",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1081,7 +1081,7 @@
    ]
   },
   {
-   "net": "/C2P",
+   "net": "C2P",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1096,7 +1096,7 @@
    ]
   },
   {
-   "net": "/DBG",
+   "net": "DBG",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1111,7 +1111,7 @@
    ]
   },
   {
-   "net": "/DBG",
+   "net": "DBG",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1126,7 +1126,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1141,7 +1141,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1156,7 +1156,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1171,7 +1171,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1186,7 +1186,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1201,7 +1201,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1216,7 +1216,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1231,7 +1231,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1246,7 +1246,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1261,7 +1261,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1276,7 +1276,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1291,7 +1291,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1306,7 +1306,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1321,7 +1321,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1336,7 +1336,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1351,7 +1351,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1366,7 +1366,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1381,7 +1381,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1396,7 +1396,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1411,7 +1411,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1426,7 +1426,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1441,7 +1441,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1456,7 +1456,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1471,7 +1471,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1486,7 +1486,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1501,7 +1501,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1516,7 +1516,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1531,7 +1531,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1546,7 +1546,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1561,7 +1561,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1576,7 +1576,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1591,7 +1591,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1606,7 +1606,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1621,7 +1621,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1636,7 +1636,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1651,7 +1651,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1666,7 +1666,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1681,7 +1681,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1696,7 +1696,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1711,7 +1711,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1726,7 +1726,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1741,7 +1741,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1756,7 +1756,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1771,7 +1771,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1786,7 +1786,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1801,7 +1801,7 @@
    ]
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -1816,7 +1816,7 @@
    ]
   },
   {
-   "net": "/LED_A",
+   "net": "LED_A",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1831,7 +1831,7 @@
    ]
   },
   {
-   "net": "/LED_DRV",
+   "net": "LED_DRV",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1846,7 +1846,7 @@
    ]
   },
   {
-   "net": "/LED_DRV",
+   "net": "LED_DRV",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1861,7 +1861,7 @@
    ]
   },
   {
-   "net": "/RS232_RX",
+   "net": "RS232_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1876,7 +1876,7 @@
    ]
   },
   {
-   "net": "/RS232_RX",
+   "net": "RS232_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1891,7 +1891,7 @@
    ]
   },
   {
-   "net": "/RS232_TX",
+   "net": "RS232_TX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1906,7 +1906,7 @@
    ]
   },
   {
-   "net": "/RS232_TX",
+   "net": "RS232_TX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1921,7 +1921,7 @@
    ]
   },
   {
-   "net": "/RS232_TX",
+   "net": "RS232_TX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1936,7 +1936,7 @@
    ]
   },
   {
-   "net": "/RS232_TX",
+   "net": "RS232_TX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1951,7 +1951,7 @@
    ]
   },
   {
-   "net": "/RS232_TX",
+   "net": "RS232_TX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1966,7 +1966,7 @@
    ]
   },
   {
-   "net": "/RS232_TX",
+   "net": "RS232_TX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1981,7 +1981,7 @@
    ]
   },
   {
-   "net": "/RS232_TX",
+   "net": "RS232_TX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -1996,7 +1996,7 @@
    ]
   },
   {
-   "net": "/RS232_TX",
+   "net": "RS232_TX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2011,7 +2011,7 @@
    ]
   },
   {
-   "net": "/SPARE",
+   "net": "SPARE",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2026,7 +2026,7 @@
    ]
   },
   {
-   "net": "/SPARE",
+   "net": "SPARE",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2041,7 +2041,7 @@
    ]
   },
   {
-   "net": "/TRIG_IN",
+   "net": "TRIG_IN",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -2056,7 +2056,7 @@
    ]
   },
   {
-   "net": "/TRIG_IN",
+   "net": "TRIG_IN",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -2071,7 +2071,7 @@
    ]
   },
   {
-   "net": "/TRIG_R",
+   "net": "TRIG_R",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -2086,7 +2086,7 @@
    ]
   },
   {
-   "net": "/TRIG_R",
+   "net": "TRIG_R",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -2101,7 +2101,7 @@
    ]
   },
   {
-   "net": "/TRIG_R",
+   "net": "TRIG_R",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -2116,7 +2116,7 @@
    ]
   },
   {
-   "net": "/TRIG_R",
+   "net": "TRIG_R",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -2131,7 +2131,7 @@
    ]
   },
   {
-   "net": "/TRIG_R",
+   "net": "TRIG_R",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -2146,7 +2146,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2161,7 +2161,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2176,7 +2176,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2191,7 +2191,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2206,7 +2206,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2221,7 +2221,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2236,7 +2236,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2251,7 +2251,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2266,7 +2266,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2281,7 +2281,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2296,7 +2296,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2311,7 +2311,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2326,7 +2326,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2341,7 +2341,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2356,7 +2356,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2371,7 +2371,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2386,7 +2386,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2401,7 +2401,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2416,7 +2416,7 @@
    ]
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2431,7 +2431,7 @@
    ]
   },
   {
-   "net": "/UART_TX",
+   "net": "UART_TX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2446,7 +2446,7 @@
    ]
   },
   {
-   "net": "/UART_TX",
+   "net": "UART_TX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2461,7 +2461,7 @@
    ]
   },
   {
-   "net": "/UART_TX",
+   "net": "UART_TX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2476,7 +2476,7 @@
    ]
   },
   {
-   "net": "/UART_TX",
+   "net": "UART_TX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2491,7 +2491,7 @@
    ]
   },
   {
-   "net": "/UART_TX",
+   "net": "UART_TX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2506,7 +2506,7 @@
    ]
   },
   {
-   "net": "/UART_TX",
+   "net": "UART_TX",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2521,7 +2521,7 @@
    ]
   },
   {
-   "net": "/UPDI",
+   "net": "UPDI",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2536,7 +2536,7 @@
    ]
   },
   {
-   "net": "/VIN",
+   "net": "VIN",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -2551,7 +2551,7 @@
    ]
   },
   {
-   "net": "/VIN",
+   "net": "VIN",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -2566,7 +2566,7 @@
    ]
   },
   {
-   "net": "/VIN",
+   "net": "VIN",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -2581,7 +2581,7 @@
    ]
   },
   {
-   "net": "/VIN",
+   "net": "VIN",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -2596,7 +2596,7 @@
    ]
   },
   {
-   "net": "/VIN",
+   "net": "VIN",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -2611,7 +2611,7 @@
    ]
   },
   {
-   "net": "/VIN",
+   "net": "VIN",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -2626,7 +2626,7 @@
    ]
   },
   {
-   "net": "/VIN",
+   "net": "VIN",
    "layer": "F.Cu",
    "width": 0.4,
    "points": [
@@ -2641,7 +2641,7 @@
    ]
   },
   {
-   "net": "/VNEG",
+   "net": "VNEG",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2656,7 +2656,7 @@
    ]
   },
   {
-   "net": "/VNEG",
+   "net": "VNEG",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2671,7 +2671,7 @@
    ]
   },
   {
-   "net": "/VPOS",
+   "net": "VPOS",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2686,7 +2686,7 @@
    ]
   },
   {
-   "net": "/VPOS",
+   "net": "VPOS",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2701,7 +2701,7 @@
    ]
   },
   {
-   "net": "/VPOS",
+   "net": "VPOS",
    "layer": "F.Cu",
    "width": 0.25,
    "points": [
@@ -2718,92 +2718,92 @@
  ],
  "vias": [
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "x": 14.3272,
    "y": 10.256
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "x": 29.829,
    "y": 11.665
   },
   {
-   "net": "/+3V3",
+   "net": "+3V3",
    "x": 36.4288,
    "y": 8.0396
   },
   {
-   "net": "/C2P",
+   "net": "C2P",
    "x": 28.614,
    "y": 6.7071
   },
   {
-   "net": "/C2P",
+   "net": "C2P",
    "x": 34.405,
    "y": 4.9595
   },
   {
-   "net": "/DBG",
+   "net": "DBG",
    "x": 30.3522,
    "y": 8.6478
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "x": 15.5656,
    "y": 1.8844
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "x": 16.5804,
    "y": 7.5304
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "x": 33.1097,
    "y": 0.7141
   },
   {
-   "net": "/GND",
+   "net": "GND",
    "x": 35.2714,
    "y": 6.9508
   },
   {
-   "net": "/RS232_RX",
+   "net": "RS232_RX",
    "x": 33.2914,
    "y": 11.4137
   },
   {
-   "net": "/SPARE",
+   "net": "SPARE",
    "x": 30.6999,
    "y": 3.6703
   },
   {
-   "net": "/TRIG_R",
+   "net": "TRIG_R",
    "x": 7.3191,
    "y": 9.6191
   },
   {
-   "net": "/TRIG_R",
+   "net": "TRIG_R",
    "x": 9.2426,
    "y": 4.0795
   },
   {
-   "net": "/UART_RX",
+   "net": "UART_RX",
    "x": 29.1439,
    "y": 7.4165
   },
   {
-   "net": "/UART_TX",
+   "net": "UART_TX",
    "x": 30.3707,
    "y": 10.3375
   },
   {
-   "net": "/UART_TX",
+   "net": "UART_TX",
    "x": 33.6206,
    "y": 8.0351
   },
   {
-   "net": "/VIN",
+   "net": "VIN",
    "x": 11.0207,
    "y": 4.1874
   }

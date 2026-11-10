@@ -8,7 +8,7 @@ until you have looked at this.**
 
 | File | What it is |
 |---|---|
-| `hardware/fab/schematic.pdf` | The schematic, one A4 page. Pins with the same label are connected. |
+| `hardware/fab/schematic.pdf` | The schematic, one A3 page (legible printed on A4). Drawn with wires, signal flow left to right; ground and 3.3 V use the usual symbols. Each signal's name appears once, on its wire. |
 | `hardware/fab/board.pdf` | The board, three pages at 5× scale: top copper and parts; bottom copper and labels; outline with dimensions. |
 | `docs/hardware-calculations.md` | Power budget, voltages, dissipation, inrush, timing and ratings margins. |
 | `docs/hardware-datasheet-review.md` | An independent check of every pin against the manufacturers' datasheets: 51 checks, no failures. |
@@ -84,7 +84,7 @@ coordinates.
 ## 4. Automated checks
 
 All run by `make hw-test` (or `tools/dev pytest tools/tests hardware/tests -q`).
-Result today: all pass (70 checks across the hardware and tools; the firmware has its own, `make fw-test`).
+Result today: all pass (73 checks across the hardware and tools; the firmware has its own, `make fw-test`).
 
 | Check | Result |
 |---|---|

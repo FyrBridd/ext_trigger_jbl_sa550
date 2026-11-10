@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "proto.h"
+
 /* What the controller wants sent next. */
 typedef enum {
     SEND_NONE = 0,
@@ -20,5 +22,28 @@ typedef enum {
     LED_SLOW,       /* amp answering; waking it or changing input */
     LED_SOLID       /* amp on and on STB */
 } ctrl_led_t;
+
+typedef struct ctrl {
+    uint8_t phase;        /* waiting for a time, or for a reply */
+    uint8_t next;         /* ctrl_send_t to send when the wait ends */
+    uint16_t at;          /* when to send `next`, or the reply deadline */
+    uint8_t power;        /* latest known power state */
+    uint8_t input;        /* latest known input state */
+    bool confirmed_on;    /* the last power *query* said "on" */
+    bool answering;       /* false from a power query timing out until any valid frame */
+    bool recheck;         /* a frame showed a wrong state: start the next cycle at once */
+} ctrl_t;
+
+/* `now` everywhere is a free-running 16-bit millisecond counter; it wraps. */
+
+void ctrl_init(ctrl_t *c, uint16_t now);
+
+/* Tell the controller about a frame received from the amp. */
+void ctrl_on_frame(ctrl_t *c, const proto_frame_t *f, uint16_t now);
+
+/* Call every loop pass. Returns at most one command to send now. */
+ctrl_send_t ctrl_step(ctrl_t *c, uint16_t now);
+
+ctrl_led_t ctrl_led(const ctrl_t *c);
 
 #endif

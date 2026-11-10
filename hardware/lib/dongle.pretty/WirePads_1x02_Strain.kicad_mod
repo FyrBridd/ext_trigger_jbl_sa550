@@ -7,7 +7,7 @@
 	(property "Reference" "REF**"
 		(at -1.5 -2.2 0)
 		(layer "F.Fab")
-		(uuid "c253bae0-ff7f-409e-b090-fd52ee65b2a1")
+		(uuid "44727b0b-0c47-44af-acfe-521e7673a00b")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -17,7 +17,7 @@
 	(property "Value" "WirePads_1x02_Strain"
 		(at -1.5 4.74 0)
 		(layer "F.Fab")
-		(uuid "15bbee2d-a324-40dc-a21a-29867e837ae9")
+		(uuid "3f092a90-2b24-4456-9fb5-939ecd9a240b")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -28,7 +28,7 @@
 		(at 0 0 0)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "c377130b-d783-48ae-aed1-362d4c734772")
+		(uuid "d4c9e587-d326-4098-9fca-ec4e6a52de93")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -39,7 +39,7 @@
 		(at 0 0 0)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "19b30c59-66a1-46a8-8743-99315d2b2815")
+		(uuid "53bccd0d-e0aa-44b0-b7b2-58f505d1135a")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -56,7 +56,7 @@
 			(type default)
 		)
 		(layer "B.CrtYd")
-		(uuid "e4356afd-fdb4-4b3d-8fe3-0a8c8d5ae41e")
+		(uuid "79a4d85a-37dd-40e7-b01b-4f735e87d355")
 	)
 	(fp_line
 		(start -3.85 3.94)
@@ -66,7 +66,7 @@
 			(type default)
 		)
 		(layer "B.CrtYd")
-		(uuid "3c4e03cf-17bf-4abd-ba01-ed870e606fcd")
+		(uuid "3ca1d946-6f52-45cc-80cf-84f2cf52fff8")
 	)
 	(fp_line
 		(start 1.4 -1.4)
@@ -76,7 +76,7 @@
 			(type default)
 		)
 		(layer "B.CrtYd")
-		(uuid "5821140b-9e19-4d27-87ea-97aeb1c0230c")
+		(uuid "3e99b643-7130-4e00-b0d5-199a2b0d79dd")
 	)
 	(fp_line
 		(start 1.4 3.94)
@@ -86,7 +86,7 @@
 			(type default)
 		)
 		(layer "B.CrtYd")
-		(uuid "1dfdc51c-09fe-46ff-8e05-244a3723f7df")
+		(uuid "9955ffac-1d1a-4270-b362-f2422dc9b03f")
 	)
 	(fp_line
 		(start -3.85 -1.4)
@@ -96,7 +96,7 @@
 			(type default)
 		)
 		(layer "F.CrtYd")
-		(uuid "7d43ca13-9161-42be-a704-3f3bff8f3c4c")
+		(uuid "75317a8a-7c82-442f-ac1e-c58661dbc5dd")
 	)
 	(fp_line
 		(start -3.85 3.94)
@@ -106,7 +106,7 @@
 			(type default)
 		)
 		(layer "F.CrtYd")
-		(uuid "2bea7a13-222e-43db-8583-b3c44ae31267")
+		(uuid "5521f477-c6fa-449e-9fc4-6fdf690511c9")
 	)
 	(fp_line
 		(start 1.4 -1.4)
@@ -116,7 +116,7 @@
 			(type default)
 		)
 		(layer "F.CrtYd")
-		(uuid "fdae6c58-5e17-43af-b21a-7bccaf405011")
+		(uuid "0b17bcec-e6bc-48f6-bd6f-1c0d3cfa040f")
 	)
 	(fp_line
 		(start 1.4 3.94)
@@ -126,7 +126,7 @@
 			(type default)
 		)
 		(layer "F.CrtYd")
-		(uuid "f904c4e9-9328-4b27-92ef-91df3b10bcac")
+		(uuid "a3e8158c-3918-409e-a3fc-28b5189f1ef5")
 	)
 	(fp_line
 		(start -3.85 -1.4)
@@ -136,7 +136,7 @@
 			(type default)
 		)
 		(layer "F.Fab")
-		(uuid "81a3a033-38b1-4516-a6cb-5740a1472d7c")
+		(uuid "cd92c76f-c610-43bc-8fb2-c2f91eab361e")
 	)
 	(fp_line
 		(start -3.85 3.94)
@@ -146,7 +146,7 @@
 			(type default)
 		)
 		(layer "F.Fab")
-		(uuid "a56cf692-2056-4d41-a09a-0335884b9056")
+		(uuid "35c25a0a-d5db-4633-9bd1-4097f71f3d4b")
 	)
 	(fp_line
 		(start 1.4 -1.4)
@@ -156,7 +156,7 @@
 			(type default)
 		)
 		(layer "F.Fab")
-		(uuid "54bc6678-8c80-4ad2-9bb1-115fdaf8a619")
+		(uuid "0dd68358-3d2b-4151-b697-0dc6d789ad33")
 	)
 	(fp_line
 		(start 1.4 3.94)
@@ -166,21 +166,21 @@
 			(type default)
 		)
 		(layer "F.Fab")
-		(uuid "e0b8d832-662c-41e1-b2f7-8456a96d2c0b")
+		(uuid "77acc64c-a252-4936-9dd6-f65a09e04026")
 	)
 	(pad "" np_thru_hole circle
 		(at -3 0)
 		(size 1.5 1.5)
 		(drill 1.5)
 		(layers "*.Cu" "*.Mask")
-		(uuid "0bca0d1e-c9ff-4dcd-b209-a3b36874f846")
+		(uuid "33341521-5bfc-4919-a5b8-44af45f4c645")
 	)
 	(pad "" np_thru_hole circle
 		(at -3 2.54)
 		(size 1.5 1.5)
 		(drill 1.5)
 		(layers "*.Cu" "*.Mask")
-		(uuid "213eb103-0a8e-4d78-898d-0e9f804063a6")
+		(uuid "eda2516b-c22c-4095-ae68-1c1f92d7d622")
 	)
 	(pad "1" thru_hole circle
 		(at 0 0)
@@ -188,7 +188,7 @@
 		(drill 1)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(uuid "6fdad403-cca6-468c-9985-b0d9e0319055")
+		(uuid "07bda647-c3c4-4159-9449-e1578c392d68")
 	)
 	(pad "2" thru_hole circle
 		(at 0 2.54)
@@ -196,7 +196,7 @@
 		(drill 1)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(uuid "60b298f6-e4cc-4909-b56c-a1c036e0c834")
+		(uuid "48b37895-ae1b-46bf-aed3-889cabff23cc")
 	)
 	(embedded_fonts no)
 )

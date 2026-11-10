@@ -383,7 +383,9 @@
     ]
   },
   "sheets": [],
-  "text_variables": {},
+  "text_variables": {
+    "VIEW": "Board"
+  },
   "tuning_profiles": {
     "meta": {
       "version": 0

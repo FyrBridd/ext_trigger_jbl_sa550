@@ -2,6 +2,7 @@
 
 Run as:  python -m hardware.design.gen_pcb
 """
+import json
 import pathlib
 
 import pcbnew
@@ -248,6 +249,51 @@ def _add_ground_pour(board) -> None:
     # from this script ignores holes, tracks and pads.
 
 
+def _add_drawing_notes(board) -> None:
+    """Title block text and the dimensions shown on the board drawing (User.Drawings)."""
+    title = board.GetTitleBlock()
+    title.SetTitle("WiiM trigger to JBL SA550 RS232 dongle - board")
+    title.SetRevision("r1")
+    title.SetComment(0, "${VIEW}")   # export_fab sets this per page; main() gives it a default
+    title.SetComment(1, "Generated from hardware/design - do not edit by hand")
+
+    def dimension(x1, y1, x2, y2, height):
+        dim = pcbnew.PCB_DIM_ALIGNED(board, pcbnew.PCB_DIM_ALIGNED_T)
+        dim.SetLayer(pcbnew.Dwgs_User)
+        dim.SetStart(pt(x1, y1))
+        dim.SetEnd(pt(x2, y2))
+        dim.SetHeight(mm(height))
+        dim.SetUnits(pcbnew.EDA_UNITS_MM)
+        dim.SetPrecision(pcbnew.DIM_PRECISION_X_XX)
+        dim.SetLineThickness(mm(0.1))
+        dim.SetTextSize(pcbnew.VECTOR2I(mm(0.8), mm(0.8)))
+        dim.SetTextThickness(mm(0.12))
+        dim.Update()
+        board.Add(dim)
+
+    dimension(0, 0, layout.LENGTH, 0, -2.5)               # overall length, above the board
+    dimension(0, 0, 0, layout.WIDTH, 2.5)                 # overall width, left of the board
+    j1x, j2x = layout.PLACEMENTS["J1"][0], layout.PLACEMENTS["J2"][0]
+    dimension(0, layout.WIDTH, j1x, layout.WIDTH, 2.0)    # board end to the trigger wire pads
+    dimension(j2x, layout.WIDTH, layout.LENGTH, layout.WIDTH, 2.0)   # amplifier wire pads to board end
+    j3x, j3y = layout.PLACEMENTS["J3"][:2]
+    dimension(0, layout.WIDTH, j3x, layout.WIDTH, 4.5)    # board end to the programming footprint centre
+    d3x = layout.PLACEMENTS["D3"][0]
+    dimension(0, layout.WIDTH, d3x, layout.WIDTH, 7.0)    # board end to the LED centre
+
+    note = pcbnew.PCB_TEXT(board)
+    note.SetText("2 layers, 1.6 mm FR4, parts on top only.\n"
+                 "Positions from the top-left corner:\n"
+                 "LED (D3) centre %.2f, %.2f mm\n"
+                 "programming footprint (J3) centre %.2f, %.2f mm"
+                 % (d3x, layout.PLACEMENTS["D3"][1], j3x, j3y))
+    note.SetLayer(pcbnew.Dwgs_User)
+    note.SetPosition(pt(layout.LENGTH - 10, layout.WIDTH + 6.5))
+    note.SetTextSize(pcbnew.VECTOR2I(mm(0.7), mm(0.7)))
+    note.SetTextThickness(mm(0.1))
+    board.Add(note)
+
+
 def _add_tracks(board, tracks, vias, locked: bool = False) -> None:
     layers = {"F.Cu": pcbnew.F_Cu, "B.Cu": pcbnew.B_Cu}
     for name, layer, width, points in tracks:
@@ -279,6 +325,7 @@ def build(routed: bool = True) -> pcbnew.BOARD:
     _add_outline(board)
     _add_parts(board)
     _add_silkscreen(board)
+    _add_drawing_notes(board)
     _add_keepouts(board)
     _add_tracks(board, layout.FIXED_TRACKS, layout.FIXED_VIAS, locked=True)
     if routed:
@@ -294,6 +341,11 @@ def main() -> None:
         PCB_PATH.unlink()
     board = build()
     pcbnew.SaveBoard(str(PCB_PATH), board)
+    # default value for the title block's ${VIEW}, kept in the project file
+    pro = PROJECT_DIR / f"{gen_sch.NAME}.kicad_pro"
+    settings = json.loads(pro.read_text())
+    settings["text_variables"] = {"VIEW": "Board"}
+    pro.write_text(json.dumps(settings, indent=2) + "\n")
     kicad.refill_zones(PCB_PATH)
 
 

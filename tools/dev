@@ -4,7 +4,7 @@
 set -euo pipefail
 repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 docker build -q -t dongle-dev "$repo/tools" >/dev/null
-tty_flag=()
+tty_flag=(-i)
 [ -t 0 ] && [ -t 1 ] && tty_flag=(-it)
 exec docker run --rm "${tty_flag[@]}" \
   -u "$(id -u):$(id -g)" -e HOME=/tmp/home \

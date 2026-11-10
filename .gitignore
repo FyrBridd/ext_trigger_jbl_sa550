@@ -1,0 +1,10 @@
+__pycache__/
+.pytest_cache/
+.superpowers/
+*.elf
+*.o
+firmware/build/
+hardware/dongle/*-backups/
+hardware/dongle/*.lck
+hardware/dongle/*.kicad_prl
+fp-info-cache

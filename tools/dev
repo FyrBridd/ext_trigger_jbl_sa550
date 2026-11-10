@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Run a command inside the project's dev container (KiCad 10, AVR and host compilers).
+# Usage: tools/dev <command> [args...]
+set -euo pipefail
+repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+docker build -q -t dongle-dev "$repo/tools" >/dev/null
+tty_flag=()
+[ -t 0 ] && [ -t 1 ] && tty_flag=(-it)
+exec docker run --rm "${tty_flag[@]}" \
+  -u "$(id -u):$(id -g)" -e HOME=/tmp/home \
+  -v "$repo":/work -w /work \
+  dongle-dev "$@"

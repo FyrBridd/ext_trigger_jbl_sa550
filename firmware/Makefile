@@ -20,6 +20,8 @@ HOST_TESTS += $(HOST)/$(1)
 endef
 
 $(eval $(call host_test,test_proto,test/test_proto.c src/proto.c,))
+$(eval $(call host_test,test_cmds,test/test_cmds.c src/cmds.c src/proto.c,))
+$(eval $(call host_test,test_cmds_rc5,test/test_cmds.c src/cmds.c src/proto.c,-DCFG_POWER_RC5=1 -DCFG_INPUT_RC5=1))
 
 $(HOST):
 	mkdir -p $@

@@ -53,9 +53,12 @@ document's starting sizes (section 5.2):
 | Strain-relief hole | unplated, 1.5 mm, 3.0 mm from its pad toward the board end |
 
 A wire goes down through the strain-relief hole, along the underside, and up
-through its pad to be soldered on the top. The 1.0 mm drill suits stranded
-wire up to about 22 AWG; the 1.5 mm hole suits insulation up to about 1.4 mm.
-These are estimates until the owner's actual cables are measured.
+through its pad to be soldered on the top.
+
+The holes are sized for the two cables named in `docs/cables.md`, whose
+dimensions are in `hardware/design/cables.py`: 24 AWG conductors (about
+0.64 mm bare) and cores up to 1.20 mm over the insulation. A test checks the
+fit, allowing for JLCPCB's hole tolerances.
 
 ## How the board is routed
 

@@ -15,6 +15,7 @@ The enclosure is not designed yet.
 | See the schematic and board | `hardware/fab/schematic.pdf`, `hardware/fab/board.pdf` |
 | Check the sums | `docs/hardware-calculations.md` |
 | Order from JLCPCB | `docs/hardware-review.md`, section 6 |
+| Buy the two cables | `docs/cables.md` |
 | Flash the chip | `docs/flashing.md` |
 | Get the first board working | `docs/bring-up.md` |
 | Understand the amp's protocol | `docs/research.md` |

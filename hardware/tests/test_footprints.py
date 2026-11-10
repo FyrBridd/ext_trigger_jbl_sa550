@@ -61,3 +61,29 @@ def test_tc2030_alignment_holes_and_no_paste():
     for p in ours.Pads():
         if p.GetNumber():
             assert not p.GetLayerSet().Contains(pcbnew.F_Paste), "contact pads must have no solder paste"
+
+
+# --- the holes suit the cables that will be soldered to them --------------------------
+
+def test_wire_holes_fit_the_specified_cables():
+    from hardware.design import cables, gen_footprints
+    for cable in cables.CABLES:
+        assert cables.fits_strain_hole(cable, gen_footprints.STRAIN_DRILL), cable.part
+        assert cables.fits_solder_hole(cable, gen_footprints.WIRE_PAD_DRILL), cable.part
+
+
+def test_the_fit_check_rejects_a_wire_that_is_too_fat():
+    import dataclasses
+
+    from hardware.design import cables, gen_footprints
+    hookup = dataclasses.replace(cables.TRIGGER, part="22 AWG hook-up wire", insulation_dia_max=1.6,
+                                 conductor_dia_max=0.95)
+    assert not cables.fits_strain_hole(hookup, gen_footprints.STRAIN_DRILL)
+    assert not cables.fits_solder_hole(hookup, gen_footprints.WIRE_PAD_DRILL)
+
+
+def test_strain_holes_are_not_sloppy_for_the_specified_cables():
+    # a strain relief only works if the wire cannot slop about in its hole
+    from hardware.design import cables, gen_footprints
+    thinnest = min(c.insulation_dia_max for c in cables.CABLES)
+    assert gen_footprints.STRAIN_DRILL - thinnest <= 0.6

@@ -13,6 +13,7 @@ until you have looked at this.**
 | `docs/hardware-calculations.md` | Power budget, voltages, dissipation, inrush, timing and ratings margins. |
 | `docs/hardware-datasheet-review.md` | An independent check of every pin against the manufacturers' datasheets: 51 checks, no failures. |
 | `hardware/fab/stock-report.md` | JLCPCB stock for every part, checked today. |
+| `docs/cables.md` | Which two cables to buy, their wire sizes, and the check that the board's holes suit them. |
 | `hardware/lib/README.md` | Where the programming footprint's pad order came from, and how the board is routed. |
 
 Optional: open `hardware/dongle/dongle.kicad_pro` in KiCad 10.
@@ -51,7 +52,7 @@ The wire pad labels underneath give the DB9 pin each wire goes to:
 - [ ] Board size 13 × 45 mm is acceptable.
 - [ ] Wire pads: 1.0 mm holes on 2.54 mm pitch, with a 1.5 mm strain-relief
       hole 3 mm outboard of each. Two at the trigger end, three at the amp
-      end.
+      end. These suit the cables named in `docs/cables.md`.
 - [ ] The programming footprint (page 3 of `board.pdf`, centre 21.4 mm from
       the trigger end) is reachable with your TC2030-MCP-NL.
 - [ ] Test pads underneath are acceptable: VIN, 3V3, GND, TXL, RXL (logic
@@ -111,7 +112,7 @@ real board.
 | **Regulator with a ceramic output capacitor** | Not stated by Holtek; widely done. | Scope the 3.3 V rail at bring-up. If it rings, fit a tantalum 10 µF at C2. |
 | **LED orientation** | The LED's datasheet numbers its pins the opposite way to KiCad. The connections are right by function. | Check the LED in JLCPCB's placement preview (section 6). |
 | **Part rotations for JLCPCB** | Taken from community tables; not verified. | Section 6. |
-| **Wire and cable sizes** | Hole sizes are estimates. | Fine for 22–28 AWG wire with insulation up to about 1.4 mm. Check against your cables before ordering. |
+| **Wire and cable sizes** | The holes are checked against two named cables (`docs/cables.md`): 1.5 mm strain-relief holes for cores up to 1.2 mm, 1.0 mm solder holes for 24 AWG. | Buy those cables, or check yours against the table there before ordering. Ordinary 22 AWG hook-up wire will not fit. |
 | **Bare-board 3D model** | `hardware/fab/dongle.step` has no parts on it. | The enclosure will take part heights from datasheets: tallest is the SOIC-8 at 1.75 mm; allow 2.0 mm above the board and 1.5 mm below for the wire runs. |
 
 ## 6. Ordering from JLCPCB

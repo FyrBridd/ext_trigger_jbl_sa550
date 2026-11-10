@@ -18,6 +18,9 @@ typedef struct {
     uint16_t reply_delay_ms;    /* default 20 */
     uint16_t input_busy_ms;     /* answers input commands with 0x85 for this long after boot */
     bool disconnected;          /* true: receives nothing, sends nothing */
+    bool ack_state;             /* true: answers power-on at once with its current state, and
+                                   keeps answering (as "standby") while it starts up */
+    bool select_ignored;        /* true: acknowledges select-STB but stays on its input */
     /* state */
     bool on;
     uint8_t input;

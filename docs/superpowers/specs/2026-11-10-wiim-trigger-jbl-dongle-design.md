@@ -339,7 +339,8 @@ mid-send is harmless; the amp discards it.
 
 All timings (poll interval, reply timeout, settle time, retry counts) are
 named constants in one header, because they will be tuned on the real amp.
-Starting values: poll 2 s, reply timeout 1 s, settle 1.5 s.
+Starting values: poll 2 s; reply timeout 3 s once the amp is known to be on
+(the protocol allows the amp 3 s) and 1 s while it is not; settle 1.5 s.
 
 Status LED **[call]**:
 

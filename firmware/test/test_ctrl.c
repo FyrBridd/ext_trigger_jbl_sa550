@@ -65,8 +65,9 @@ static void test_standby_then_power_on_then_requery(void) {
   CHECK_EQ(ctrl_led(&c), LED_SLOW);
 }
 static void test_timeout_sends_power_on_and_blinks_fast(void) {
+  /* while the amp is not known to be on, silence is acted on after the short timeout */
   start(0); run(STARTUP_MS); uint16_t t0 = t;
-  CHECK_EQ(run(REPLY_TIMEOUT_MS + 5), SEND_POWER_ON); CHECK_EQ(t - t0, REPLY_TIMEOUT_MS);
+  CHECK_EQ(run(WAKE_REPLY_TIMEOUT_MS + 5), SEND_POWER_ON); CHECK_EQ(t - t0, WAKE_REPLY_TIMEOUT_MS);
   CHECK_EQ(ctrl_led(&c), LED_FAST);
   rx(0x00, 0, 0); CHECK_EQ(ctrl_led(&c), LED_SLOW);       /* any valid frame clears "not answering" */
 }
@@ -114,6 +115,39 @@ static void test_wraparound(void) {
   uint16_t t0 = t; CHECK_EQ(run(POLL_MS + 5), SEND_POWER_QUERY); CHECK_EQ((uint16_t)(t - t0), POLL_MS);
   t0 = t; CHECK_EQ(run(REPLY_TIMEOUT_MS + 5), SEND_POWER_ON); CHECK_EQ((uint16_t)(t - t0), REPLY_TIMEOUT_MS);
 }
+/* --- found by the whole-branch review --- */
+
+static void test_ack_of_power_on_does_not_cause_a_storm(void) {
+  /* an amp that answers our power-on with its current state (still standby) must
+     not make us ask and command again at once */
+  start(0); run(STARTUP_MS); rx(0x00, 0, 0);
+  CHECK_EQ(step(), SEND_POWER_ON); uint16_t t0 = t;
+  t += 20; rx(0x00, 0, 0);                                 /* the acknowledgement: "standby" */
+  CHECK_EQ(step(), SEND_NONE);
+  CHECK_EQ(run(WAKE_POLL_MS + 5), SEND_POWER_QUERY); CHECK_EQ(t - t0, WAKE_POLL_MS);
+}
+static void test_ack_of_select_showing_wrong_input_does_not_cause_a_storm(void) {
+  start(0); run(STARTUP_MS); rx(0x00, 0, 1); run(SETTLE_MS); rx(0x1D, 0, 0x06);
+  CHECK_EQ(step(), SEND_SELECT_STB); uint16_t t0 = t;
+  t += 20; rx(0x1D, 0, 0x06);                              /* acknowledged, but the input did not change */
+  CHECK_EQ(step(), SEND_NONE);
+  CHECK_EQ(run(WAKE_POLL_MS + 5), SEND_POWER_QUERY); CHECK_EQ(t - t0, WAKE_POLL_MS);
+}
+static void test_on_frame_while_waking_confirms_on(void) {
+  /* a late reply, or the amp's own "now on" report, moves us on to the input stage */
+  start(0); run(STARTUP_MS); CHECK_EQ(run(WAKE_REPLY_TIMEOUT_MS + 5), SEND_POWER_ON);
+  t += 100; rx(0x00, 0, 1); uint16_t t0 = t;
+  CHECK_EQ(run(SETTLE_MS + 5), SEND_INPUT_QUERY); CHECK_EQ(t - t0, SETTLE_MS);
+}
+static void test_steady_state_allows_the_amp_three_seconds(void) {
+  /* the protocol gives the amp 3 s to answer; once it is on we wait that long */
+  steady(0); CHECK_EQ(run(POLL_MS + 5), SEND_POWER_QUERY);
+  CHECK_EQ(run(2900), SEND_NONE);                          /* no power-on while the reply may still come */
+  rx(0x00, 0, 1); CHECK_EQ(step(), SEND_INPUT_QUERY);
+  CHECK_EQ(run(2900), SEND_NONE);
+  rx(0x1D, 0, 0x15); CHECK_EQ(ctrl_led(&c), LED_SOLID);
+}
+
 int main(void)
 {
     RUN(test_startup_delay);
@@ -129,5 +163,9 @@ int main(void)
     RUN(test_unsolicited_good_state_changes_nothing);
     RUN(test_unsolicited_frame_while_awaiting);
     RUN(test_wraparound);
+    RUN(test_ack_of_power_on_does_not_cause_a_storm);
+    RUN(test_ack_of_select_showing_wrong_input_does_not_cause_a_storm);
+    RUN(test_on_frame_while_waking_confirms_on);
+    RUN(test_steady_state_allows_the_amp_three_seconds);
     TEST_MAIN_END();
 }

@@ -27,6 +27,10 @@ File names are `dongle-p?-i?-q?[-dbg].hex`:
 | `q1` / `q0` | The input is queried before selecting / never queried (STB is selected once after waking) |
 | `-dbg` | Debug build: copies the amp's replies to test pad PA1 and logs them in the EEPROM |
 
+The files are built for the ATtiny412. If JLCPCB ever fits one of the
+alternate chips (ATtiny402 or ATtiny202), the firmware must be rebuilt for
+that chip first; these files will not do.
+
 Start with `dongle-pd-id-q1-dbg.hex`. `docs/bring-up.md` says when to try
 another. Sizes are in `firmware/release/SIZES.md`.
 

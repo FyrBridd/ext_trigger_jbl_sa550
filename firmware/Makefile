@@ -26,6 +26,8 @@ $(eval $(call host_test,test_ctrl_noquery,test/test_ctrl_noquery.c src/ctrl.c,-D
 APP_SRC := test/sim_amp.c test/hal_host.c src/app.c src/ctrl.c src/cmds.c src/proto.c
 $(eval $(call host_test,test_app,test/test_app.c $(APP_SRC),))
 $(eval $(call host_test,test_app_rc5,test/test_app.c $(APP_SRC),-DCFG_POWER_RC5=1 -DCFG_INPUT_RC5=1))
+$(eval $(call host_test,test_app_noquery,test/test_app_noquery.c $(APP_SRC),-DCFG_INPUT_QUERY=0))
+$(eval $(call host_test,test_app_noquery_rc5,test/test_app_noquery.c $(APP_SRC),-DCFG_INPUT_QUERY=0 -DCFG_POWER_RC5=1 -DCFG_INPUT_RC5=1))
 $(eval $(call host_test,test_dbglog,test/test_dbglog.c src/dbglog.c $(APP_SRC),-DCFG_DEBUG=1))
 $(eval $(call host_test,test_app_debug,test/test_app.c src/dbglog.c $(APP_SRC),-DCFG_DEBUG=1))
 $(eval $(call host_test,test_cmds_rc5,test/test_cmds.c src/cmds.c src/proto.c,-DCFG_POWER_RC5=1 -DCFG_INPUT_RC5=1))
@@ -34,7 +36,7 @@ $(HOST):
 	mkdir -p $@
 
 test: $(HOST_TESTS)
-	@set -e; for t in $(HOST_TESTS); do echo "== $$t"; ./$$t; done
+	@fail=0; for t in $(HOST_TESTS); do echo "== $$t"; ./$$t || fail=1; done; exit $$fail
 
 # --- firmware for the ATtiny412 -------------------------------------------------
 #

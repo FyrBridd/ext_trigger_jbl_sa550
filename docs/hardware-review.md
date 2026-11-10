@@ -59,10 +59,32 @@ The wire pad labels underneath give the DB9 pin each wire goes to:
 - [ ] The LED is at 27.98 mm from the trigger end, 1.8 mm from the top edge.
       The shell's light hole goes there.
 
+### Hole positions
+
+In millimetres from the board's top-left corner (trigger end on the left),
+x along the length. All from the generated board file.
+
+| Hole | Diameter | Plated | x | y |
+|---|---|---|---|---|
+| Trigger strain relief, `+` wire | 1.5 | no | 1.85 | 5.23 |
+| Trigger strain relief, `G` wire | 1.5 | no | 1.85 | 7.77 |
+| Trigger pad `+` | 1.0 | yes | 4.85 | 5.23 |
+| Trigger pad `G` | 1.0 | yes | 4.85 | 7.77 |
+| Programming footprint alignment | 0.99 | no | 20.38 | 4.06 |
+| Programming footprint alignment | 0.99 | no | 22.42 | 4.06 |
+| Programming footprint alignment | 0.99 | no | 21.40 | 9.14 |
+| Amp pad `G` (DB9 pin 5) | 1.0 | yes | 40.15 | 3.96 |
+| Amp pad `R` (DB9 pin 3) | 1.0 | yes | 40.15 | 6.50 |
+| Amp pad `T` (DB9 pin 2) | 1.0 | yes | 40.15 | 9.04 |
+| Amp strain relief, three holes | 1.5 | no | 43.15 | 3.96, 6.50, 9.04 |
+
+Page 3 of `board.pdf` shows these holes but does not print their
+coordinates.
+
 ## 4. Automated checks
 
 All run by `make hw-test` (or `tools/dev pytest tools/tests hardware/tests -q`).
-Result today: **62 passed**.
+Result today: all pass (70 checks across the hardware and tools; the firmware has its own, `make fw-test`).
 
 | Check | Result |
 |---|---|

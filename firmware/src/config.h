@@ -14,7 +14,13 @@
 #define WAKE_POLL_MS 500         /* re-check interval while it is not */
 #endif
 #ifndef REPLY_TIMEOUT_MS
-#define REPLY_TIMEOUT_MS 1000    /* how long to wait for a query's reply */
+#define REPLY_TIMEOUT_MS 3000    /* how long to wait for a reply once the amp is known to be on:
+                                    the protocol allows the amp 3 s */
+#endif
+#ifndef WAKE_REPLY_TIMEOUT_MS
+#define WAKE_REPLY_TIMEOUT_MS 1000   /* how long to wait for a power reply while the amp is not
+                                        known to be on; short, so a waking amp is noticed quickly.
+                                        Acting early here only costs one more power-on command. */
 #endif
 #ifndef SETTLE_MS
 #define SETTLE_MS 1500           /* pause after the amp first reports on */

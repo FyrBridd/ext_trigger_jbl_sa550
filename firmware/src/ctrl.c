@@ -27,9 +27,22 @@ static void schedule(ctrl_t *c, ctrl_send_t what, uint16_t now, uint16_t delay)
     c->at = now + delay;
 }
 
+/* True for WAKE_POLL_MS after we send power-on or select. A frame in that time
+ * showing the old state is the amp acknowledging the command with its state at
+ * that moment, not news. */
+static bool acknowledging(const ctrl_t *c, uint16_t now)
+{
+    return c->set_pending && !due(now, c->set_at + WAKE_POLL_MS);
+}
+
 /* A frame, not asked for, showed the amp in the wrong state. */
 static void wrong_state_seen(ctrl_t *c, uint16_t now)
 {
+    if (acknowledging(c, now)) {
+        /* The re-check is already scheduled. Reacting again here would send
+         * commands as fast as the amp answers. */
+        return;
+    }
     c->recheck = true;
     if (c->phase == PH_WAIT && c->next == SEND_POWER_QUERY) {
         c->at = now;
@@ -43,6 +56,8 @@ void ctrl_init(ctrl_t *c, uint16_t now)
     c->confirmed_on = false;
     c->answering = true;
     c->recheck = false;
+    c->set_pending = false;
+    c->last_set = SEND_NONE;
     schedule(c, SEND_POWER_QUERY, now, STARTUP_MS);
 }
 
@@ -53,7 +68,7 @@ static void after_power_on_confirmed(ctrl_t *c, uint16_t now, bool first_time)
 #if CFG_INPUT_QUERY
     schedule(c, SEND_INPUT_QUERY, now, delay);
 #else
-    if (first_time || c->input == NO) {
+    if (first_time || c->input != YES) {
         schedule(c, SEND_SELECT_STB, now, delay);
     } else {
         schedule(c, SEND_POWER_QUERY, now, POLL_MS);
@@ -77,11 +92,17 @@ static void on_power_frame(ctrl_t *c, const proto_frame_t *f, uint16_t now)
         }
         return;
     }
-    if (good) {                                  /* not asked for: a status report */
+    if (good) {
+        /* Not the reply to a pending query: a status report, the acknowledgement
+         * of our power-on, or a reply that came after its timeout. Any of them is
+         * the amp telling the truth about its state. */
         c->power = on ? YES : NO;
         if (!on) {
             c->confirmed_on = false;
             wrong_state_seen(c, now);
+        } else if (!c->confirmed_on && c->phase == PH_WAIT) {
+            c->confirmed_on = true;
+            after_power_on_confirmed(c, now, true);
         }
     }
 }
@@ -114,9 +135,28 @@ static void on_input_frame(ctrl_t *c, const proto_frame_t *f, uint16_t now)
     }
 }
 
+#if !CFG_INPUT_QUERY
+/* Builds that never query the input take a select as done. If the amp refuses
+ * it, that must be undone, or the wrong input would be shown as success. */
+static void select_refused(ctrl_t *c, uint16_t now)
+{
+    c->input = NO;
+    if (c->phase == PH_WAIT && c->next == SEND_POWER_QUERY) {
+        c->at = now + WAKE_POLL_MS;      /* the next cycle will select again */
+    }
+}
+#endif
+
 void ctrl_on_frame(ctrl_t *c, const proto_frame_t *f, uint16_t now)
 {
     c->answering = true;
+#if !CFG_INPUT_QUERY
+    if (c->set_pending && c->last_set == SEND_SELECT_STB && f->answer != PROTO_ANSWER_OK
+        && (f->cmd == PROTO_CMD_INPUT || f->cmd == PROTO_CMD_RC5)) {
+        select_refused(c, now);
+        return;
+    }
+#endif
     if (f->cmd == PROTO_CMD_POWER) {
         on_power_frame(c, f, now);
     } else if (f->cmd == PROTO_CMD_INPUT) {
@@ -148,8 +188,10 @@ ctrl_send_t ctrl_step(ctrl_t *c, uint16_t now)
     switch (what) {
     case SEND_POWER_QUERY:
         c->recheck = false;
+        c->set_pending = false;
         c->phase = PH_AWAIT_POWER;
-        c->at = now + REPLY_TIMEOUT_MS;
+        /* patient with an amp that is on, quick to notice one that is waking */
+        c->at = now + (c->confirmed_on ? REPLY_TIMEOUT_MS : WAKE_REPLY_TIMEOUT_MS);
         break;
     case SEND_INPUT_QUERY:
         c->recheck = false;
@@ -157,9 +199,15 @@ ctrl_send_t ctrl_step(ctrl_t *c, uint16_t now)
         c->at = now + REPLY_TIMEOUT_MS;
         break;
     case SEND_POWER_ON:
+        c->set_pending = true;
+        c->last_set = SEND_POWER_ON;
+        c->set_at = now;
         schedule(c, SEND_POWER_QUERY, now, WAKE_POLL_MS);
         break;
     case SEND_SELECT_STB:
+        c->set_pending = true;
+        c->last_set = SEND_SELECT_STB;
+        c->set_at = now;
 #if CFG_INPUT_QUERY
         schedule(c, SEND_POWER_QUERY, now, WAKE_POLL_MS);
 #else

@@ -24,7 +24,7 @@ hardware.
 | 6 | Worst-case clamp voltage across C1 | 24.1 V | 25 V | 0.9 V (see note) |
 | 7 | Reverse voltage across D1 | 12 V | 40 V | 3.3× |
 | 8 | LED current | 1.3 mA | 20 mA pin limit | 15× |
-| 9 | Baud rate divisor error | +0.06 % | about ±2 % | ample |
+| 9 | Serial timing error, worst case | about ±2 % | ±2 % recommended | none to spare (see item 9) |
 | 10 | RS232 output swing | ±5.0 V minimum | ±3 V needed | 2 V |
 | 12 | Track current capacity, 0.4 mm | 1.2 A | 0.12 A peak | 10× |
 
@@ -116,14 +116,21 @@ behind a 2 mm hole.
 
 `BAUD register = 64 × F_CPU / (16 × baud) = 64 × 3,333,333 / (16 × 38,400) = 347.2`, written as 347
 
-- Actual rate with 347: `64 × 3,333,333 / (16 × 347) = 38,424 baud`, an
-  error of +0.06 %.
-- The internal oscillator's own tolerance is larger: about ±2 % over
-  temperature at 3 V [mem]. The firmware applies the per-chip factory
-  correction value (`SIGROW.OSC20ERR3V`), which removes most of the room
-  temperature part.
-- An 8N1 link works with roughly ±4 % total mismatch between the two ends
-  [mem]. The amp's clock is assumed to be crystal-accurate.
+- Rounding the divisor costs almost nothing: with 347 the rate is
+  `64 × 3,333,333 / (16 × 347) = 38,424 baud`, +0.06 %.
+- The oscillator is what matters. From the ATtiny412 datasheet [DS]: the
+  internal oscillator is within ±3 % at 25 °C and 3 V, and ±4 % over 0 to
+  70 °C, if nothing is done. Using the per-chip error value stored at the
+  factory, it is within ±2 % over 0 to 70 °C.
+- The same datasheet recommends that a receiver's clock be within ±2 % for
+  8-bit frames [DS].
+- So with the factory correction the worst case just meets the
+  recommendation, with nothing to spare; without it the link would not be
+  reliable. The firmware applies the correction (`SIGROW.OSC20ERR3V`) when it
+  sets the baud rate. **That correction is required, not a nicety.**
+- At room temperature in a living room the error should be well inside ±2 %,
+  but this has not been measured. Bring-up step B4 measures the bit time.
+- The amp's clock is assumed to be crystal-accurate.
 - 3.33 MHz is well inside what the ATtiny412 may run at from 3.3 V [DS].
 
 ## 10. RS232 levels

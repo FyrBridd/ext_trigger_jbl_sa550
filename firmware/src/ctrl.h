@@ -32,6 +32,9 @@ typedef struct ctrl {
     bool confirmed_on;    /* the last power *query* said "on" */
     bool answering;       /* false from a power query timing out until any valid frame */
     bool recheck;         /* a frame showed a wrong state: start the next cycle at once */
+    bool set_pending;     /* power-on or select sent, and no power query since */
+    uint8_t last_set;     /* which of the two it was (ctrl_send_t) */
+    uint16_t set_at;      /* when it was sent */
 } ctrl_t;
 
 /* `now` everywhere is a free-running 16-bit millisecond counter; it wraps. */

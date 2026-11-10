@@ -94,7 +94,8 @@ Board reference (top view, trigger end on the left):
   power-on, `FE 03` for the input query, `FE 04` for select-STB, and a copy
   of every byte the amp sends.
 - **If the timing is off by more than a few percent:** note the measured bit
-  time (26.0 µs is nominal).
+  time (26.0 µs is nominal). The serial link has little timing margin
+  (`docs/hardware-calculations.md`, item 9), so an error over 2 % matters.
 
 ## Part C — with the amp
 
@@ -109,6 +110,17 @@ speakers. The STB input is in processor mode, so its volume is fixed.
   playback so the trigger comes on.
 - **Expect:** slow blink at once (the amp answers "standby"); the amp wakes;
   a few seconds later the LED goes solid and the amp is on STB.
+
+### C1a. How quickly the amp answers
+
+- **Do:** With the scope on `T` and `R` together, measure the time from the
+  end of a query on `T` to the start of the amp's reply on `R`, with the amp
+  on, and again in standby.
+- **Expect:** well under a second. The protocol allows the amp up to 3 s.
+- **Why:** the firmware waits 3 s for an amp that is on, and 1 s for one
+  that is not. If the amp is slower than 1 s in standby it still works, but
+  wakes a little less promptly. Tell me the figures and I will set the
+  timings to suit.
 
 ### C2. If it does not go solid
 
@@ -125,6 +137,8 @@ repeat C1.
 | Slow, amp on, wrong input | input query answered with an error, or never answered | The SA550 does not answer the input query | Flash the `-q0-` version: it selects STB once after waking without asking. |
 | Slow, amp on and already on STB | input query answered with data that is not `05` or `15` | The SA550 numbers its inputs differently | Tell me the data byte; the STB code is one line in `firmware/src/config.h`. |
 | Solid, but the amp is not on STB | — | The input code `05` is some other input on the SA550 | Tell me which input it chose. |
+| Slow, and `T` shows select-STB about every half second | select STB acknowledged, input query still shows another input | The amp accepts the select but does not act on it | Stop the WiiM. Tell me the log; do not leave it running like this. |
+| Slow or fast, and replies on `R` arrive more than 3 s after the query | queries often unanswered | The amp is slower than the protocol says | Tell me the latency from C1a; the timeouts are two lines in `firmware/src/config.h`. |
 
 If none of these fits, send me the decoded log text, the LED pattern, and a
 scope capture of `T` and `R` together covering one trigger-on.
@@ -152,7 +166,8 @@ Tick each one on the real system, with the release build
       5 seconds.
 - [ ] In normal listening there are no clicks, mutes or display flicker
       from the dongle. (It asks the amp two questions every 2 seconds and
-      sends nothing else.)
+      sends nothing else. After a command it waits half a second before
+      looking again, so it cannot send commands in a burst.)
 - [ ] After the WiiM goes to standby, the dongle is silent (LED off) and the
       amp times out to standby by itself.
 - [ ] With the shell closed, a firm pull on either cable does not move the
@@ -166,5 +181,6 @@ All in `firmware/src/config.h`; rebuild with `make fw`.
 |---|---|---|
 | `POLL_MS` | 2000 | How often the amp is re-checked once all is well |
 | `WAKE_POLL_MS` | 500 | How often while it is not |
-| `REPLY_TIMEOUT_MS` | 1000 | How long a reply is waited for (the protocol allows the amp 3 s) |
+| `REPLY_TIMEOUT_MS` | 3000 | How long a reply is waited for once the amp is known to be on (the protocol allows it 3 s) |
+| `WAKE_REPLY_TIMEOUT_MS` | 1000 | How long a power reply is waited for while the amp is not known to be on |
 | `SETTLE_MS` | 1500 | Pause between the amp reporting "on" and the first input query |

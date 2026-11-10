@@ -52,7 +52,7 @@ void sim_amp_init(sim_amp_t *a)
 static bool can_answer(const sim_amp_t *a)
 {
     if (a->booting) {
-        return false;
+        return a->ack_state;
     }
     return a->on || a->rs232_in_standby;
 }
@@ -62,9 +62,14 @@ static void power_on_command(sim_amp_t *a)
     a->n_power_on++;
     if (a->on) {
         send_power(a);
-    } else if (a->rs232_in_standby && !a->booting) {
-        a->booting = true;                 /* silent until it has started up */
-        a->boot_done_at = a->now + a->boot_ms;
+    } else if (a->rs232_in_standby) {
+        if (!a->booting) {
+            a->booting = true;             /* silent until it has started up, unless ack_state */
+            a->boot_done_at = a->now + a->boot_ms;
+        }
+        if (a->ack_state) {
+            send_power(a);                 /* "standby": the state right now */
+        }
     }
 }
 
@@ -79,7 +84,7 @@ static uint8_t input_command(sim_amp_t *a, bool is_query, uint8_t input)
     if (!a->on || a->now < a->busy_until) {
         return 0x85;                       /* command invalid at this time */
     }
-    if (!is_query) {
+    if (!is_query && !a->select_ignored) {
         a->input = input;
     }
     return 0x00;

@@ -1,7 +1,7 @@
 # Firmware build. Run through the dev container:  tools/dev make -C firmware <target>
 #
 #   test   build and run every host test (no hardware needed)
-#   avr    build every firmware variant for the ATtiny412 (added in a later task)
+#   avr    build every firmware variant for the ATtiny412 into release/, with size and fuse checks
 
 CFLAGS_COMMON := -std=c11 -Wall -Wextra -Werror
 HOST_CC := gcc
@@ -35,6 +35,44 @@ $(HOST):
 
 test: $(HOST_TESTS)
 	@set -e; for t in $(HOST_TESTS); do echo "== $$t"; ./$$t; done
+
+# --- firmware for the ATtiny412 -------------------------------------------------
+#
+# Variants: release/dongle-p{d|r}-i{d|r}-q{1|0}[-dbg].hex
+#   p  power-on command: d direct, r simulated remote-control code
+#   i  select-STB command: d direct, r simulated remote-control code
+#   q  1 query the input before selecting, 0 never query it
+#   -dbg  debug build: live trace on PA1 and a reply log in the EEPROM
+
+AVR_CC := avr-gcc
+AVR_CFLAGS := $(CFLAGS_COMMON) -mmcu=attiny412 -Os -flto -ffunction-sections -fdata-sections \
+              -Wl,--gc-sections -DF_CPU=3333333UL -Isrc
+AVR_SRC := src/main.c src/hal_avr.c src/app.c src/ctrl.c src/cmds.c src/proto.c src/dbglog.c
+AVR := build/avr
+REL := release
+
+# $(call avr_variant,<name>,<flags>)
+define avr_variant
+$(AVR)/$(1).elf: $(AVR_SRC) $(wildcard src/*.h) | $(AVR)
+	$(AVR_CC) $(AVR_CFLAGS) $(2) -o $$@ $(AVR_SRC)
+$(REL)/$(1).hex: $(AVR)/$(1).elf | $(REL)
+	avr-objcopy -O ihex -R .eeprom -R .lock -R .signature -R .user_signatures $$< $$@
+AVR_ELFS += $(AVR)/$(1).elf
+AVR_HEXES += $(REL)/$(1).hex
+endef
+
+$(foreach p,d r,$(foreach i,d r,$(foreach q,1 0,\
+  $(eval $(call avr_variant,dongle-p$(p)-i$(i)-q$(q),-DCFG_POWER_RC5=$(if $(filter r,$(p)),1,0) -DCFG_INPUT_RC5=$(if $(filter r,$(i)),1,0) -DCFG_INPUT_QUERY=$(q)))\
+  $(eval $(call avr_variant,dongle-p$(p)-i$(i)-q$(q)-dbg,-DCFG_POWER_RC5=$(if $(filter r,$(p)),1,0) -DCFG_INPUT_RC5=$(if $(filter r,$(i)),1,0) -DCFG_INPUT_QUERY=$(q) -DCFG_DEBUG=1)))))
+
+$(AVR) $(REL):
+	mkdir -p $@
+
+.PHONY: avr
+avr: $(AVR_HEXES)
+	python ../tools/fw_sizes.py --out $(REL)/SIZES.md $(AVR_ELFS)
+	python ../tools/check_fuses.py $(AVR_HEXES)
+	@echo "built $(words $(AVR_HEXES)) firmware files into $(REL)/"
 
 clean:
 	rm -rf build

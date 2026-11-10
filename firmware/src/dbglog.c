@@ -1,6 +1,9 @@
 #include "dbglog.h"
 
+#include "config.h"
 #include "hal.h"
+
+#if CFG_DEBUG   /* the whole file: release builds have no log */
 
 #define NONE 0xFF
 
@@ -85,3 +88,5 @@ void dbglog_frame(const proto_frame_t *f)
         store(DBGLOG_UNSOLICITED, record);
     }
 }
+
+#endif

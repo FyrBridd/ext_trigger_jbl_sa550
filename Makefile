@@ -21,3 +21,12 @@ route:
 # Check every part on the bill of materials is in stock at JLCPCB. Run on the day of ordering.
 stock:
 	$(DEV) python tools/jlc_stock.py --bom hardware/fab/bom.csv --report hardware/fab/stock-report.md
+
+# Firmware: host tests (no hardware), and the ATtiny412 builds into firmware/release/.
+.PHONY: fw-test fw
+fw-test:
+	$(DEV) make -C firmware test
+	$(DEV) pytest tools/tests -q
+
+fw:
+	$(DEV) make -C firmware avr

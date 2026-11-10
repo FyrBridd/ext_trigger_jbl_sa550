@@ -92,7 +92,7 @@ def wire_pads(board, n):
         # an unplated hole's "copper" equals its drill: no annular ring
         _round_pad(fp, "", STRAIN_OFFSET_X, y, STRAIN_DRILL, STRAIN_DRILL, pcbnew.PAD_ATTRIB_NPTH)
     top, bottom = -1.4, (n - 1) * WIRE_PITCH + 1.4
-    left, right = STRAIN_OFFSET_X - 1.0, 1.4
+    left, right = STRAIN_OFFSET_X - 0.85, 1.4   # 0.1 outside the strain hole's edge
     _rect(fp, pcbnew.F_CrtYd, left, top, right, bottom, 0.05)
     _rect(fp, pcbnew.B_CrtYd, left, top, right, bottom, 0.05)
     _rect(fp, pcbnew.F_Fab, left, top, right, bottom, 0.1)

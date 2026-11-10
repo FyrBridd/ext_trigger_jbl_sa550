@@ -132,3 +132,24 @@ def symbol_fields(sch_path) -> dict[str, dict[str, str]]:
 def export_pdf(sch_path, out_path) -> None:
     pathlib.Path(out_path).parent.mkdir(parents=True, exist_ok=True)
     _cli("sch", "export", "pdf", "-o", out_path, sch_path)
+
+
+# --- board -----------------------------------------------------------------
+
+def drc(pcb_path, parity: bool = False) -> dict:
+    """KiCad's design rule check report: violations, unconnected_items, schematic_parity."""
+    with tempfile.TemporaryDirectory() as tmp:
+        out = pathlib.Path(tmp) / "drc.json"
+        extra = ["--schematic-parity"] if parity else []
+        _cli("pcb", "drc", "--format", "json", "--severity-all", *extra, "-o", out, pcb_path)
+        report = json.loads(out.read_text())
+    for key in ("violations", "unconnected_items", "schematic_parity"):
+        report.setdefault(key, [])
+    return report
+
+
+def render(pcb_path, out_png, side: str = "top", width: int = 1800, height: int = 700) -> None:
+    """A 3D-style picture of the board from one side."""
+    pathlib.Path(out_png).parent.mkdir(parents=True, exist_ok=True)
+    _cli("pcb", "render", "--side", side, "--width", width, "--height", height,
+         "--quality", "basic", "-o", out_png, pcb_path)

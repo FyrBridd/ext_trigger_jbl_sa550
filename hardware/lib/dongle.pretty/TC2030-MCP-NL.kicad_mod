@@ -8,7 +8,7 @@
 	(property "Reference" "REF**"
 		(at 0 2.7 0)
 		(layer "F.SilkS")
-		(uuid "d20cfd57-f650-49b6-a701-ae9ae7be02b2")
+		(uuid "732baed2-faa6-4fbd-9877-be1e7531506e")
 		(effects
 			(font
 				(size 1 1)
@@ -19,7 +19,7 @@
 	(property "Value" "TC2030-MCP-NL"
 		(at 0 -2.3 0)
 		(layer "F.Fab")
-		(uuid "18aeaf3f-a707-4b35-89bb-25f1f4b5683c")
+		(uuid "235d6ed7-a5d1-4881-9133-2c1f6cbd3736")
 		(effects
 			(font
 				(size 1 1)
@@ -32,7 +32,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "7fe1e474-22e9-4d5a-990b-437d97c91b5c")
+		(uuid "50dae698-c974-46a1-9325-0ac173386fee")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -45,7 +45,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "ce7d95b3-96eb-43a6-b8af-ee7c9bd11643")
+		(uuid "1c17f3e1-f9a6-4f1d-b12b-82a3e4e7952d")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -63,7 +63,7 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-		(uuid "96acd59d-205f-4517-9d1a-85fd2dcfe4ce")
+		(uuid "9c75d737-7cd2-459b-90b8-4f448fd54edf")
 	)
 	(fp_line
 		(start -1.27 1.27)
@@ -73,7 +73,7 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-		(uuid "e86b7122-10c5-4dae-89c5-9017317abc6f")
+		(uuid "6a7b2d88-7535-4a70-bc2b-fcc376b8f1a0")
 	)
 	(fp_line
 		(start -3.5 -2)
@@ -83,7 +83,7 @@
 			(type solid)
 		)
 		(layer "F.CrtYd")
-		(uuid "8b2dd7fd-b99d-42a6-90b0-44db87a51f54")
+		(uuid "66b5a362-fafa-42bc-be60-fd219810fa37")
 	)
 	(fp_line
 		(start -3.5 2)
@@ -93,7 +93,7 @@
 			(type solid)
 		)
 		(layer "F.CrtYd")
-		(uuid "1adf6dc4-d25d-4f27-8e7d-942fcd5aff6f")
+		(uuid "f139aab2-872c-4937-a0d4-e04f4ce059d2")
 	)
 	(fp_line
 		(start 3.5 -2)
@@ -103,7 +103,7 @@
 			(type solid)
 		)
 		(layer "F.CrtYd")
-		(uuid "5a831c0f-47da-4349-9c8e-0d9c848a1f16")
+		(uuid "fa6cfd10-563b-4f3d-b803-dc4dd1f1c25e")
 	)
 	(fp_line
 		(start 3.5 2)
@@ -113,12 +113,12 @@
 			(type solid)
 		)
 		(layer "F.CrtYd")
-		(uuid "b5bfb63e-76b4-40b5-b59f-4ac4201ebff2")
+		(uuid "afc505fb-963a-4c97-80b2-5ad46db5a714")
 	)
 	(fp_text user "KEEPOUT"
 		(at 0 0 0)
 		(layer "Cmts.User")
-		(uuid "be2cc2ed-1e5b-4a27-b31f-885ec7a58ab5")
+		(uuid "164cd828-f0e5-4cea-965d-4a20817583a2")
 		(effects
 			(font
 				(size 0.4 0.4)
@@ -129,7 +129,7 @@
 	(fp_text user "${REFERENCE}"
 		(at 0 0 0)
 		(layer "F.Fab")
-		(uuid "b02fc309-d5fe-4b16-8ee4-b5d2ccbddbcf")
+		(uuid "2153803b-1fed-40b3-a738-57c797212d82")
 		(effects
 			(font
 				(size 1 1)
@@ -142,61 +142,61 @@
 		(size 0.9906 0.9906)
 		(drill 0.9906)
 		(layers "*.Cu" "*.Mask")
-		(uuid "9c7948e5-88cc-47ce-9766-79b879d9603e")
+		(uuid "8c6d380f-f879-4fad-9846-131813efe771")
 	)
 	(pad "" np_thru_hole circle
 		(at 2.54 -1.016)
 		(size 0.9906 0.9906)
 		(drill 0.9906)
 		(layers "*.Cu" "*.Mask")
-		(uuid "9361ef41-2b0d-4178-ba81-9cb7bda690cf")
+		(uuid "b46fe958-bd78-48a8-bb7a-15292c4b3328")
 	)
 	(pad "" np_thru_hole circle
 		(at 2.54 1.016)
 		(size 0.9906 0.9906)
 		(drill 0.9906)
 		(layers "*.Cu" "*.Mask")
-		(uuid "95c8649d-b58d-4a53-aef5-48c782d77f3b")
+		(uuid "15a2c743-3b81-4661-9beb-ac96e4af9058")
 	)
 	(pad "1" connect circle
 		(at -1.27 0.635)
 		(size 0.7874 0.7874)
 		(layers "F.Cu" "F.Mask")
-		(uuid "287143af-6c33-479f-ba58-77403e9adc2a")
+		(uuid "3fb3d443-8bd7-453a-b446-196176174512")
 	)
 	(pad "2" connect circle
 		(at -1.27 -0.635)
 		(size 0.7874 0.7874)
 		(layers "F.Cu" "F.Mask")
-		(uuid "97455e6e-ecef-4a38-87b1-6acfe7a19d57")
+		(uuid "4d88a088-4dc3-4122-a517-d3f20fcd2d95")
 	)
 	(pad "3" connect circle
 		(at 0 0.635)
 		(size 0.7874 0.7874)
 		(layers "F.Cu" "F.Mask")
-		(uuid "ef3dde03-0768-47b6-bcdd-20bcfa9ea0b1")
+		(uuid "1df0b301-022b-48d6-88aa-11926169f877")
 	)
 	(pad "4" connect circle
 		(at 0 -0.635)
 		(size 0.7874 0.7874)
 		(layers "F.Cu" "F.Mask")
-		(uuid "f071b66f-93fa-41c8-9709-0fe9d0aba5e1")
+		(uuid "26488b59-2cd9-4e0e-9bc8-8845656c41aa")
 	)
 	(pad "5" connect circle
 		(at 1.27 0.635)
 		(size 0.7874 0.7874)
 		(layers "F.Cu" "F.Mask")
-		(uuid "6547a594-ee1f-4eb9-8d26-9c97675b3b76")
+		(uuid "23c3bf7c-fa65-4e40-8342-1ff2cedc5905")
 	)
 	(pad "6" connect circle
 		(at 1.27 -0.635)
 		(size 0.7874 0.7874)
 		(layers "F.Cu" "F.Mask")
-		(uuid "9b9107b9-305c-4560-83aa-858379e89d5b")
+		(uuid "8b18edf9-674a-437b-922a-b79f3dc7b9f3")
 	)
 	(zone
 		(layer "F.Cu")
-		(uuid "da967d40-8cc9-4c5d-8029-d3b3559798d2")
+		(uuid "28662a3c-2db9-476a-939e-f63e3a68f0c4")
 		(hatch full 0.508)
 		(connect_pads
 			(clearance 0)

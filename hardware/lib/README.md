@@ -56,9 +56,10 @@ A wire goes down through the strain-relief hole, along the underside, and up
 through its pad to be soldered on the top.
 
 The holes are sized for the two cables named in `docs/cables.md`, whose
-dimensions are in `hardware/design/cables.py`: 24 AWG conductors (about
-0.64 mm bare) and cores up to 1.20 mm over the insulation. A test checks the
-fit, allowing for JLCPCB's hole tolerances.
+dimensions are in `hardware/design/cables.py`: 24 AWG and 28 AWG conductors
+(about 0.64 mm and 0.38 mm bare) and cores of about 1 mm over the
+insulation. A test checks the fit, allowing for JLCPCB's hole tolerances.
+Anything up to 1.25 mm over the insulation passes the strain-relief holes.
 
 ## How the board is routed
 

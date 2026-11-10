@@ -2,76 +2,80 @@
 
 What to buy for the two ends of the dongle, and the check that the board's
 wire holes suit them. Researched 2026-11-10. Dimensions marked **[DS]** are
-from the manufacturer's drawing; **[derived]** are worked out from it. Stock
-and prices were read from DigiKey UK that day and will move. I assumed a UK
-buyer; say if that is wrong.
+from the manufacturer's drawing or specification; **[typical]** are the usual
+figures for that kind of cable, where the maker publishes none; **[derived]**
+are worked out. Stock and prices were read from DigiKey UK that day and will
+move. I assumed a UK buyer; say if that is wrong.
 
 ## What to buy
 
-All four lines are stocked by DigiKey UK, about £7.50 of parts before VAT.
-DigiKey's delivery charge on a small order is much more than the parts
-(£22 under £65 when checked), so it is worth adding them to another order.
-
-| For | Part | DigiKey price | What it is |
+| For | Part | DigiKey UK price | What it is |
 |---|---|---|---|
 | Trigger end | Tensility **053-0279R** | £2.85 | 3.5 mm mono plug on 1.83 m of two-core cable. The free end comes stripped and tinned. |
-| Amp end, cable | Tensility **30-01424**, 1 m | £3.37 per metre | Three cores (red, black, white) with a foil screen and drain wire. |
-| Amp end, connector | MH Connectors **MHDB9SS** | £0.31 | DB9 female with solder cups. |
-| Amp end, hood | MH Connectors **MHDPPK9-DE-K** | £0.99 | Hood with cable clamp and thumbscrews; takes cable up to 8 mm. |
+| Amp end | StarTech **MXT1001MBK** | £6.13 | 1 m serial cable, DB9 male to DB9 female, wired straight through. Cut the male end off and keep the female end. |
 
 Links:
 - https://www.digikey.co.uk/en/products/detail/tensility-international-corp/053-0279R/701166
-- https://www.digikey.co.uk/en/products/detail/tensility-international-corp/30-01424/13151644
-- https://www.digikey.co.uk/en/products/detail/mh-connectors/MHDB9SS/16983851
-- https://www.digikey.co.uk/en/products/detail/mh-connectors/MHDPPK9-DE-K/16984027
+- https://www.startech.com/en-gb/cables/mxt1001mbk
 
-### Why the amp end is a connector and loose cable, not a cut serial cable
+Both are stocked by DigiKey UK, whose delivery charge on a small order
+(£22 under £65 when checked) is more than the parts. The StarTech cable is
+also sold by most computer suppliers. The trigger cable is the harder one to
+find elsewhere; any 3.5 mm mono or stereo lead with separate insulated cores
+of about 1 mm will do in its place, but check it against the table below.
 
-You proposed cutting an off-the-shelf serial cable. I recommend this instead,
-for three reasons:
+### Why not a loose cable and a solder-cup connector
 
-- **Known wire size.** No moulded DB9 cable I found publishes the diameter
-  of its individual cores, which is the figure the strain-relief holes
-  depend on.
-- **Same wire both ends.** This cable is 24 AWG, like the trigger cable, so
-  one hole size suits every wire. Moulded serial cables are 28 or 30 AWG.
-- **Less to trim, thinner cable.** Three cores and a drain, not nine, in a
-  4.1 mm jacket against about 5 mm.
-
-The cost is three more solder joints, in the DB9's solder cups.
-
-If you would still rather cut a ready-made cable, the StarTech
-**MXT1001MBK** (1 m, DB9 male to female, 28 AWG, 4.8 mm jacket, £6.13) is
-the one to use. Its cores are thinner than the holes are sized for, so they
-fit, but loosely: expect about 0.9–1.0 mm cores in 1.5 mm strain-relief
-holes. Its core colours are not published; buzz them out.
+An earlier version of this page recommended a solder-cup DB9 with Tensility
+30-01424 three-core cable. The owner found that cable is now sold only in
+5 m lengths, so the ready-made StarTech cable is used instead.
 
 ## Wire sizes, and the holes on the board
 
-| | Trigger cable 053-0279R | Serial cable 30-01424 | Source |
+| | Trigger cable 053-0279R | Serial cable MXT1001MBK |
+|---|---|---|
+| Conductor | 24 AWG, 11 × 0.16 mm [DS] | 28 AWG [DS]; usually 7 × 0.127 mm [typical] |
+| Bare conductor diameter | about 0.64 mm [derived] | about 0.38 mm [derived] |
+| One insulated core | 1.0 ± 0.08 mm [DS] | **not published**; 0.95 ± 0.10 mm [typical] |
+| Number of cores | 2, plus a spiral screen | 9 expected, plus foil and a drain wire |
+| Outer jacket | 3.7 ± 0.2 mm [DS] | 4.8 mm [DS] |
+
+| Hole on the board | Size | Wire through it | Clearance on diameter |
 |---|---|---|---|
-| Conductor | 24 AWG, 11 × 0.16 mm | 24 AWG, 41 × 0.08 mm | [DS] |
-| Bare conductor diameter | about 0.64 mm | about 0.62 mm | [derived] |
-| One insulated core | 1.0 ± 0.08 mm | 1.1 ± 0.10 mm | [DS] |
-| Outer jacket | 3.7 ± 0.2 mm | 4.1 ± 0.2 mm | [DS] |
+| Strain relief, trigger end | 1.5 mm | 0.92–1.08 mm core | 0.37–0.63 mm |
+| Strain relief, amp end | 1.5 mm | 0.85–1.05 mm core [typical] | 0.40–0.70 mm |
+| Solder pad, trigger end | 1.0 mm | about 0.70 mm tinned conductor | 0.22 mm or more |
+| Solder pad, amp end | 1.0 mm | about 0.45 mm tinned conductor | 0.47 mm or more |
 
-| Hole on the board | Size | Smallest it may be made | Largest thing through it | Clearance |
-|---|---|---|---|---|
-| Strain relief (unplated) | 1.5 mm | 1.45 mm | 1.20 mm insulated core | 0.25 mm |
-| Solder pad (plated) | 1.0 mm | 0.92 mm | about 0.70 mm tinned conductor | 0.22 mm |
+The clearances allow for JLCPCB making an unplated hole up to 0.05 mm small
+and a plated one up to 0.08 mm small.
 
-So the holes already on the board suit these cables, and nothing on the board
-changes. The fit is now checked automatically: `hardware/design/cables.py`
-holds the cable figures, and a test fails if a hole is too small for them
-(or so large that a wire would slop about in its strain-relief hole).
+**The holes already on the board suit both cables, so the board does not
+change.** Two honest caveats:
 
-A wire it would **not** suit: ordinary 22 AWG hook-up wire, which is about
-1.6 mm over its insulation and will not pass a 1.5 mm hole.
+- **The amp-end fit is on the loose side.** The serial cable's wires are
+  thinner than the trigger cable's, so they have about half a millimetre of
+  room in the solder holes. They solder perfectly well like that; the joint
+  just needs holding still while it cools. I left those holes at 1.0 mm so
+  that a 24 AWG cable can still be used there later.
+- **The serial cable's core size is not a published figure.** If its cores
+  turned out fatter than usual they would still pass: anything up to 1.25 mm
+  goes through the strain-relief holes. Measure one core with calipers when
+  the cable arrives, before soldering.
 
-The jacket diameters, 3.7 mm and 4.1 mm, are what the enclosure's cable
-collars will be sized to. With these cables bought, the enclosure can be
-designed from the drawings without waiting for measurements, though a
-caliper check when they arrive is still worth doing.
+The strain-relief holes are a first line of defence only: a wire threaded
+down through one hole and up through the next cannot be pulled straight out.
+The shell's collars, clamped on the cable jackets, are what take a real pull.
+
+The fit is checked automatically: `hardware/design/cables.py` holds these
+figures, and a test fails if a hole is too small for them.
+
+A wire these holes would **not** suit: ordinary 22 AWG hook-up wire, which
+is about 1.6 mm over its insulation and will not pass a 1.5 mm hole.
+
+The jacket diameters, 3.7 mm and 4.8 mm, are what the enclosure's cable
+collars will be sized to. A caliper check when the cables arrive is still
+worth doing before the shell is printed.
 
 ## Which wire goes where
 
@@ -88,23 +92,27 @@ Check with a meter that black really is the sleeve: the drawing labels it
 "ring", though the plug is mono and has none. And check the WiiM's polarity
 first (`docs/bring-up.md`, step A1).
 
-**Serial cable.** The colours are yours to choose, since you solder both
-ends. This is the convention the documents assume:
+**Serial cable.** StarTech does not publish its core colours, so find the
+three wires with a meter, from the female plug's pins to the cut ends.
 
-| Wire | DB9 solder cup | Board pad | Carries |
-|---|---|---|---|
-| Red | Pin 2 | `T` | Dongle to amp |
-| White | Pin 3 | `R` | Amp to dongle |
-| Black | Pin 5 | `G` (amp end) | Ground |
-| Drain wire and foil | Not connected | Trim back at both ends | — |
+| DB9 female pin | Board pad | Carries |
+|---|---|---|
+| 2 | `T` | Dongle to amp |
+| 3 | `R` | Amp to dongle |
+| 5 | `G` (amp end) | Ground |
+| 1, 4, 6, 7, 8, 9 | — | Not used. Cut these six back to different lengths so no two bare ends can touch. |
+| Drain wire and foil | — | Trim back; do not connect. |
 
 Pins 2 and 3 swap if step A3 of the bring-up guide shows the amp transmits
 on pin 2.
 
 ## What I could not confirm
 
+- The serial cable's core insulation diameter and core colours.
+- That the serial cable has all nine cores; the specification does not say.
+  Only pins 2, 3 and 5 matter, and a cable sold as a serial extension will
+  have those.
+- The bare conductor diameters, which no document states; they follow from
+  the gauge.
 - Prices at CPC, Farnell and RS: their pages refused automated access.
-- Whether DigiKey charges a cutting fee on cable sold by the metre.
-- The bare conductor diameters, which no drawing states; they are derived
-  from the strand counts.
 - Anything about fit in the hand. The clearances are arithmetic, not a trial.

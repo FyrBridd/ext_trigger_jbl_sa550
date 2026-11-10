@@ -1,6 +1,7 @@
 """The cables the board's wire holes are sized for.
 
-Figures are from the manufacturers' drawings (read 2026-11-10) unless marked.
+Figures are from the manufacturers' drawings or specifications (read 2026-11-10)
+unless marked.
 The wire-pad footprint is checked against them by the tests, and the enclosure
 will take its collar sizes from the jacket diameters.
 See docs/cables.md for what to buy and how the wires map to the pads.
@@ -31,15 +32,18 @@ TRIGGER = Cable(
     jacket_dia=3.7, jacket_tolerance=0.2,
 )
 
-# Amp end: three-core screened cable, soldered to a DB9 female solder-cup connector.
+# Amp end: a ready-made DB9 male-to-female serial cable, 1 m, with the male end cut off.
+# StarTech publishes the gauge and the jacket diameter but not the size of the
+# individual cores, so the core figure is the usual one for this kind of cable
+# (UL2464 nine-core 28 AWG: 0.95 +/- 0.10 mm over the insulation), not a measurement.
 SERIAL = Cable(
     name="amp serial cable",
-    part="Tensility 30-01424",
-    source="https://tensility.s3.us-west-2.amazonaws.com/uploads/pdffiles/30-01424.pdf",
-    conductor="24 AWG, 41 x 0.08 mm",
-    conductor_dia_max=0.70,      # about 0.62 mm bare; 0.70 allows for tinning by hand
-    insulation_dia_max=1.20,     # 1.1 +/- 0.10 mm
-    jacket_dia=4.1, jacket_tolerance=0.2,
+    part="StarTech MXT1001MBK",
+    source="https://www.startech.com/en-gb/cables/mxt1001mbk",
+    conductor="28 AWG (typically 7 x 0.127 mm)",
+    conductor_dia_max=0.45,      # about 0.38 mm bare; 0.45 allows for tinning by hand
+    insulation_dia_max=1.05,     # typical for the cable type; not published for this part
+    jacket_dia=4.8, jacket_tolerance=0.2,
 )
 
 CABLES = (TRIGGER, SERIAL)

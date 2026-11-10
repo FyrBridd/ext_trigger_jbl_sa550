@@ -112,7 +112,7 @@ real board.
 | **Regulator with a ceramic output capacitor** | Not stated by Holtek; widely done. | Scope the 3.3 V rail at bring-up. If it rings, fit a tantalum 10 µF at C2. |
 | **LED orientation** | The LED's datasheet numbers its pins the opposite way to KiCad. The connections are right by function. | Check the LED in JLCPCB's placement preview (section 6). |
 | **Part rotations for JLCPCB** | Taken from community tables; not verified. | Section 6. |
-| **Wire and cable sizes** | The holes are checked against two named cables (`docs/cables.md`): 1.5 mm strain-relief holes for cores up to 1.2 mm, 1.0 mm solder holes for 24 AWG. | Buy those cables, or check yours against the table there before ordering. Ordinary 22 AWG hook-up wire will not fit. |
+| **Wire and cable sizes** | The holes are checked against two named cables (`docs/cables.md`): 1.5 mm strain-relief holes for cores of about 1 mm, 1.0 mm solder holes for 24 and 28 AWG. The serial cable's core size is a typical figure, not a published one. | Buy those cables, and measure one core of the serial cable before soldering. Ordinary 22 AWG hook-up wire will not fit. |
 | **Bare-board 3D model** | `hardware/fab/dongle.step` has no parts on it. | The enclosure will take part heights from datasheets: tallest is the SOIC-8 at 1.75 mm; allow 2.0 mm above the board and 1.5 mm below for the wire runs. |
 
 ## 6. Ordering from JLCPCB

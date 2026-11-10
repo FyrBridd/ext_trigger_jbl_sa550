@@ -50,10 +50,12 @@ Board reference (top view, trigger end on the left):
 ### A4. Cables
 
 - **Do:** Buy the cables in `docs/cables.md`, which the board's holes are
-  sized for. Measure both outer diameters with calipers (the drawings say
-  3.7 mm and 4.1 mm; the shell's collars depend on them). Buzz out which
-  wire goes to the 3.5 mm tip and sleeve. Solder the DB9 connector: red to
-  pin 2, white to pin 3, black to pin 5.
+  sized for. Measure both outer diameters with calipers (the makers say
+  3.7 mm and 4.8 mm; the shell's collars depend on them). Cut the male end
+  off the serial cable and measure one of its cores: it should be about
+  1 mm, and must be under 1.25 mm. Buzz out which wire goes to the 3.5 mm
+  tip and sleeve, and which three go to pins 2, 3 and 5 of the DB9 female
+  plug. Cut the six unused serial wires back to different lengths.
 
 ## Part B — the board alone
 
@@ -106,9 +108,10 @@ speakers. The STB input is in processor mode, so its volume is fixed.
 
 ### C1. Connect
 
-- **Do:** Trigger off. Solder the serial cable: `T` to DB9 pin 2 (red),
-  `R` to pin 3 (white), `G` to pin 5 (black), or `T` and `R` swapped if A3
-  said so. Trim the drain wire and foil back. Amp in standby. Plug the DB9 in. Start
+- **Do:** Trigger off. Solder the serial cable: `T` to the DB9 pin 2
+  wire, `R` to the pin 3 wire, `G` to the pin 5 wire, or `T` and `R`
+  swapped if A3 said so. These wires are thin for their holes; hold each
+  still until the solder sets. Trim the drain wire and foil back. Amp in standby. Plug the DB9 in. Start
   playback so the trigger comes on.
 - **Expect:** slow blink at once (the amp answers "standby"); the amp wakes;
   a few seconds later the LED goes solid and the amp is on STB.

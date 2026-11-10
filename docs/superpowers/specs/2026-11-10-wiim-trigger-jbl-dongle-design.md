@@ -440,8 +440,8 @@ Status LED **[call]**:
   with the two cable jacket diameters as parameters. **[call]** The board's
   3D model, exported from KiCad, is used to check the fit.
 - **Cables:** `docs/cables.md` names the two cables the board's holes are
-  sized for, with jacket diameters of 3.7 mm and 4.1 mm from the makers'
-  drawings. The shell is designed to those and checked against the owner's
+  sized for, with jacket diameters of 3.7 mm and 4.8 mm from the makers'
+  figures. The shell is designed to those and checked against the owner's
   caliper measurement when the cables arrive.
 - JLC3DP's published rules for MJF and SLS nylon, which the model must meet:
 

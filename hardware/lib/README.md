@@ -38,7 +38,7 @@ Rules from the drawing's notes that the board layout must respect:
 - The TC2030-CLIP retaining board attaches to the alignment pins from
   underneath, so the underside behind the footprint stays clear.
 
-The RJ12 column is from sheet 3 of the same drawing. It matters only if the
+The RJ12 column is from the cable wiring table on a later sheet of the same drawing. It matters only if the
 cable is ever buzzed out; the board follows the pad column.
 
 ## WirePads_1x02_Strain and WirePads_1x03_Strain (J1, J2)

@@ -3,6 +3,9 @@
 #include "cmds.h"
 #include "config.h"
 #include "ctrl.h"
+#if CFG_DEBUG
+#include "dbglog.h"
+#endif
 #include "hal.h"
 #include "proto.h"
 
@@ -20,6 +23,9 @@ void app_init(void)
     proto_parser_init(&parser);
     ctrl_init(&ctrl, now);
     last_rx = now;
+#if CFG_DEBUG
+    dbglog_init();
+#endif
 }
 
 static void show(ctrl_led_t mode, uint16_t now)
@@ -53,6 +59,9 @@ void app_step(void)
         hal_dbg_putc(byte);
 #endif
         if (proto_parser_feed(&parser, byte, &frame)) {
+#if CFG_DEBUG
+            dbglog_frame(&frame);
+#endif
             ctrl_on_frame(&ctrl, &frame, now);
         }
     }
@@ -68,6 +77,7 @@ void app_step(void)
 #if CFG_DEBUG
         hal_dbg_putc(TRACE_SENT_MARKER);
         hal_dbg_putc((uint8_t)what);
+        dbglog_sent(what);
 #endif
         hal_uart_write(buf, n);
     }

@@ -10,8 +10,7 @@ from enclosure import params as p
 
 TOUCHING = 1e-6          # an intersection smaller than this (mm^3) is two faces touching
 BEYOND_END = 2.0         # a cable is drawn this far out of the shell's end
-WIRE_ROOM_MARGIN = 0.5   # the wire-room rod is this much smaller in radius than the chamber
-WIRE_ROOM_END = 0.2      # and stops this far short of each end of it
+WIRE_ROOM_END = 0.2      # the wire-room rod stops this far short of each end of its chamber
 SIGHTLINE_TOP = 12.0     # a line of sight from the LED runs up to here, well outside the shell
 
 
@@ -87,7 +86,7 @@ def chamber_span(collar: p.Collar) -> tuple[float, float]:
 def wire_room(collar: p.Collar) -> cq.Workplane:
     """Space the wires need between the cable's end and the board: most of the chamber."""
     x1, x2 = chamber_span(collar)
-    return rod_x(x1 + WIRE_ROOM_END, x2 - WIRE_ROOM_END, 2 * (p.CHAMBER_R - WIRE_ROOM_MARGIN))
+    return rod_x(x1 + WIRE_ROOM_END, x2 - WIRE_ROOM_END, 2 * p.WIRE_ROOM_R)
 
 
 def programming_pins() -> cq.Workplane:

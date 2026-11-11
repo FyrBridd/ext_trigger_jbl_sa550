@@ -55,6 +55,7 @@ Z_RAIL = round(Z_BOARD_TOP + RAIL_GAP, 3)
 # --- the ends -----------------------------------------------------------------------
 CHAMBER_L = 6.0           # length of the wire chamber between each collar and the board
 CHAMBER_R = 5.5           # its radius
+WIRE_ROOM_R = 5.0         # the wires need a clear space of this radius in each chamber
 COLLAR_L = 7.0            # length of each cable collar
 X_MIN = round(-(GAP + CHAMBER_L + COLLAR_L), 3)
 X_MAX = round(BOARD_L + GAP + CHAMBER_L + COLLAR_L, 3)

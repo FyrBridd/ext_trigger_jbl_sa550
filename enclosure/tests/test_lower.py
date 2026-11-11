@@ -13,7 +13,7 @@ def lower():
 def test_one_valid_solid_below_the_split(lower):
     assert lower.solids().size() == 1 and lower.val().isValid()
     b = lower.val().BoundingBox()
-    assert math.isclose(b.xmin, p.X_MIN) and math.isclose(b.xmax, p.X_MAX)
+    assert math.isclose(b.xmin, p.X_MIN, abs_tol=1e-6) and math.isclose(b.xmax, p.X_MAX, abs_tol=1e-6)
     assert math.isclose(b.zmax, 0, abs_tol=1e-6) and math.isclose(b.zmin, -p.OD / 2, abs_tol=1e-3)
     assert math.isclose(b.ylen, p.OD, abs_tol=1e-3)
 

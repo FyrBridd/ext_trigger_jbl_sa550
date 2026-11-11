@@ -2,6 +2,8 @@
 
 lower() holds the board: it has the board pocket, the trench for the wire runs, the pocket
 for the programming cable's pins, and the pilot holes the screws cut their thread in.
+upper() is the lid: it has the cavity over the parts, two rails that stop the board lifting,
+the screws' clearance holes and counterbores, and the LED hole.
 Both are a half cylinder with things cut out of it, in the shell's frame (see params.py).
 """
 import cadquery as cq
@@ -53,3 +55,25 @@ def lower() -> cq.Workplane:
         tools += _cable_way(collar)
     tools += [k.rod_z(xy, p.PILOT_D, -p.PILOT_DEPTH, _OVER) for xy in p.SCREW_XY]
     return _cut_all(_half_cylinder(upper=False), tools)
+
+
+def upper() -> cq.Workplane:
+    pocket_x = (-p.GAP, p.BOARD_L + p.GAP)
+    wide = (-p.POCKET_HALF_W, p.POCKET_HALF_W)
+    above_rails = (p.Z_RAIL, p.Z_CEILING)
+    out = p.OD                     # anything cut up to here opens through the round outside
+    tools = [
+        # the cavity over the board: full width up to the rails' underside...
+        k.box(pocket_x, wide, (-_OVER, p.Z_RAIL)),
+        # ...then only between the rails...
+        k.box(pocket_x, (-p.RAIL_INNER_Y, p.RAIL_INNER_Y), above_rails),
+        # ...except at each end of the board, where the wires cross and the rails stop short
+        k.box((-p.GAP, p.RAIL_END), wide, above_rails),
+        k.box((p.BOARD_L - p.RAIL_END, p.BOARD_L + p.GAP), wide, above_rails),
+        k.rod_z(p.LED_XY, p.LED_HOLE_D, 0, out),
+    ]
+    for collar in p.COLLARS:
+        tools += _cable_way(collar)
+    for xy in p.SCREW_XY:
+        tools += [k.rod_z(xy, p.CLEAR_D, -_OVER, out), k.rod_z(xy, p.CBORE_D, p.SEAT_Z, out)]
+    return _cut_all(_half_cylinder(upper=True), tools)

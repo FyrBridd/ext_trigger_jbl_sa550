@@ -6,6 +6,8 @@ upper() is the lid: it has the cavity over the parts, two rails that stop the bo
 the screws' clearance holes and counterbores, and the LED hole.
 Both are a half cylinder with things cut out of it, in the shell's frame (see params.py).
 """
+import math
+
 import cadquery as cq
 
 from enclosure import keepouts as k, params as p
@@ -75,6 +77,14 @@ def upper() -> cq.Workplane:
     ]
     for collar in p.COLLARS:
         tools += _cable_way(collar)
-    for xy in p.SCREW_XY:
-        tools += [k.rod_z(xy, p.CLEAR_D, -_OVER, out), k.rod_z(xy, p.CBORE_D, p.SEAT_Z, out)]
+    # A counterbore through the round outside leaves a wall beside the head that tapers to a
+    # feather edge. Above the height where it would be thinner than the minimum, open that side.
+    thin_from = math.sqrt((p.OD / 2) ** 2 - (p.SCREW_Y + p.CBORE_D / 2 + p.HEAD_WALL_MIN) ** 2)
+    for x, y in p.SCREW_XY:
+        outward = sorted((y, math.copysign(out, y)))
+        tools += [
+            k.rod_z((x, y), p.CLEAR_D, -_OVER, out),
+            k.rod_z((x, y), p.CBORE_D, p.SEAT_Z, out),
+            k.box((x - p.CBORE_D / 2, x + p.CBORE_D / 2), outward, (thin_from, out)),
+        ]
     return _cut_all(_half_cylinder(upper=True), tools)

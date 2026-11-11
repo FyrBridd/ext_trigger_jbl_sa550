@@ -86,6 +86,37 @@ def test_screws_pass_and_their_heads_are_sunk(upper):
         assert p.SEAT_Z + p.SCREW_HEAD_H <= top                                                    # nothing sticks out
 
 
+def test_no_thin_wall_beside_the_screw_heads(upper):
+    # A counterbore through a round surface leaves a wall beside the head that tapers to nothing.
+    # It is cut off where it would be thinner than JLC3DP's minimum, and whole below that.
+    r = p.OD / 2
+    edge = p.SCREW_Y + p.CBORE_D / 2                                    # the counterbore's outer edge
+    thin_from = math.sqrt(r ** 2 - (edge + p.HEAD_WALL_MIN) ** 2)
+    assert p.HEAD_WALL_MIN >= 1.2 and thin_from > p.SEAT_Z + 1.0
+    for x, y in p.SCREW_XY:
+        side = 1 if y > 0 else -1
+        feather = k.box(x=(x - 0.5, x + 0.5), y=sorted((side * edge, side * r)), z=(thin_from + 0.05, r))
+        assert k.overlap(upper, feather) == 0.0
+        wall = k.box(x=(x - 0.2, x + 0.2), y=sorted((side * (edge + 0.05), side * (edge + p.HEAD_WALL_MIN - 0.05))),
+                     z=(p.SEAT_Z + 0.05, thin_from - 0.05))
+        assert math.isclose(k.overlap(upper, wall), k.volume(wall), rel_tol=1e-6)
+
+
+def _head_recesses() -> float:
+    """Volume taken out of the round body for the four screw heads: each counterbore, plus the
+    slot that opens its outer side above the height where the wall beside it would be too thin."""
+    r = p.OD / 2
+    body = k.rod_x(p.X_MIN, p.X_MAX, p.OD)
+    thin_from = math.sqrt(r ** 2 - (p.SCREW_Y + p.CBORE_D / 2 + p.HEAD_WALL_MIN) ** 2)
+    total = 0.0
+    for x, y in p.SCREW_XY:
+        side = 1 if y > 0 else -1
+        bore = k.rod_z((x, y), p.CBORE_D, p.SEAT_Z, p.OD)
+        slot = k.box((x - p.CBORE_D / 2, x + p.CBORE_D / 2), sorted((y, side * p.OD)), (thin_from, p.OD))
+        total += k.overlap(body, bore.union(slot))
+    return total
+
+
 def test_screws_reach_their_pilot_holes(upper, lower):
     for xy in p.SCREW_XY:
         shank = k.screw(xy, p.PILOT_D - 0.05, p.SEAT_Z - p.SCREW_LEN, p.SEAT_Z)
@@ -119,13 +150,12 @@ def test_nothing_else_is_cut_away(upper, lower):
     assert math.isclose(k.volume(lower), half - lower_cuts, rel_tol=0.005)
 
     rails = 2 * (p.POCKET_HALF_W - p.RAIL_INNER_Y) * (p.BOARD_L - 2 * p.RAIL_END) * (p.Z_CEILING - p.Z_RAIL)
-    head_depth = math.sqrt(r ** 2 - p.SCREW_Y ** 2) - p.SEAT_Z          # counterbore depth on the screw's axis
     led_depth = math.sqrt(r ** 2 - p.LED_XY[1] ** 2) - p.Z_CEILING
     upper_cuts = (
         2 * p.POCKET_HALF_W * pocket_l * p.Z_CEILING - rails                                 # cavity less the rails
         + chambers + bores
         + 4 * math.pi / 4 * p.CLEAR_D ** 2 * p.SEAT_Z                                        # clearance holes
-        + 4 * math.pi / 4 * p.CBORE_D ** 2 * head_depth                                      # counterbores
+        + _head_recesses()                                                                   # counterbores
         + math.pi / 4 * p.LED_HOLE_D ** 2 * led_depth                                        # LED hole
     )
     assert math.isclose(k.volume(upper), half - upper_cuts, rel_tol=0.005)

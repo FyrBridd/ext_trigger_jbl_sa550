@@ -78,6 +78,8 @@ PILOT_RELIEF_DEPTH = 0.6  # so plastic raised by the thread cannot hold the halv
 CLEAR_D = 2.6             # through the upper half
 CBORE_D = 5.2             # counterbore for the head and the driver's blade
 SEAT_Z = 3.0              # the head sits on a seat at this height
+HEAD_WALL_MIN = 1.2       # the wall left beside each head by the round outside is cut off where it
+                          # would be thinner than this (JLC3DP's minimum wall)
 SCREW_Y = 5.1
 SCREW_XY = tuple(
     (round(x, 3), y)

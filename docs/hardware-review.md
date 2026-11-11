@@ -35,7 +35,7 @@ These are decisions made while building. Say if any of them is wrong.
 
 | Design document | Built | Why |
 |---|---|---|
-| About 12 × 38 mm (limits 14 × 45) | **13 × 45 mm** | With 0603 parts on one side and a 4.85 mm wire-pad zone at each end, nothing smaller fits. It is at the length limit. Expect the shell to be about 19 mm across and 65–70 mm long. |
+| About 12 × 38 mm (limits 14 × 45) | **13 × 45 mm** | With 0603 parts on one side and a 4.85 mm wire-pad zone at each end, nothing smaller fits. It is at the length limit. The shell is 20 mm across and 72.8 mm long (`docs/enclosure.md`). |
 | Test pads, side not stated | **On the bottom** | No room on top. They are bare copper and not fitted by JLCPCB, so assembly is still one-sided. |
 | Part names on the silkscreen | **Not printed** | No room between the parts. They are on page 1 of `board.pdf`. The silkscreen has `+ G` and `G R T` beside the wire pads on top, and the full legend underneath. |
 | Routed by script | **Autorouted** (Freerouting), three connections by hand | The board is dense. The result is saved and checked by KiCad's own rule check. |
@@ -86,7 +86,7 @@ coordinates.
 ## 4. Automated checks
 
 All run by `make hw-test` (or `tools/dev pytest tools/tests hardware/tests -q`).
-Result today: all pass (77 checks across the hardware and tools; the firmware has its own, `make fw-test`).
+Result today: all pass (79 checks across the hardware and tools; the firmware and the enclosure have their own, `make fw-test` and `make enc-test`).
 
 | Check | Result |
 |---|---|
@@ -115,7 +115,7 @@ real board.
 | **LED orientation** | The LED's datasheet numbers its pins the opposite way to KiCad. The connections are right by function. | Check the LED in JLCPCB's placement preview (section 6). |
 | **Part rotations for JLCPCB** | Taken from community tables; not verified. | Section 6. |
 | **Wire and cable sizes** | The holes are checked against two named cables (`docs/cables.md`): 1.5 mm strain-relief holes for cores of about 1 mm, 1.0 mm solder holes for 24 and 28 AWG. The serial cable's core size is a typical figure, not a published one. | Buy those cables, and measure one core of the serial cable before soldering. Ordinary 22 AWG hook-up wire will not fit. |
-| **Bare-board 3D model** | `hardware/fab/dongle.step` has no parts on it. | The enclosure will take part heights from datasheets: tallest is the SOIC-8 at 1.75 mm; allow 2.0 mm above the board and 1.5 mm below for the wire runs. |
+| **Bare-board 3D model** | `hardware/fab/dongle.step` has no parts on it. | The enclosure takes part heights from datasheets: tallest is the SOIC-8 at 1.75 mm. It allows 2.5 mm above the board and 1.8 mm below for the wire runs (`docs/enclosure.md`). |
 
 ## 6. Ordering from JLCPCB
 

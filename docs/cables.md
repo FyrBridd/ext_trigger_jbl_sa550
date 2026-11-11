@@ -74,8 +74,8 @@ A wire these holes would **not** suit: ordinary 22 AWG hook-up wire, which
 is about 1.6 mm over its insulation and will not pass a 1.5 mm hole.
 
 The jacket diameters, 3.7 mm and 4.8 mm, are what the enclosure's cable
-collars will be sized to. A caliper check when the cables arrive is still
-worth doing before the shell is printed.
+collars are sized to (`docs/enclosure.md`). Check both with calipers when
+the cables arrive, before the shell is ordered.
 
 ## Which wire goes where
 

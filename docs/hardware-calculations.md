@@ -143,7 +143,7 @@ the serial cable is connected.
 
 V_F about 2.0 V for the red KT-0603R [mem]. An ATtiny412 pin can source well
 over 10 mA [mem]. 1.3 mA is dim but visible; the LED sits inside the shell
-behind a 2 mm hole.
+behind a 2 mm hole about 6 mm deep, so it is seen from straight above.
 
 ## 9. Serial timing
 

@@ -178,8 +178,8 @@ Tick each one on the real system, with the release build
       looking again, so it cannot send commands in a burst.)
 - [ ] After the WiiM goes to standby, the dongle is silent (LED off) and the
       amp times out to standby by itself.
-- [ ] With the shell closed, a firm pull on either cable does not move the
-      board.
+- [ ] With the shell closed (`docs/enclosure.md`, section 7), a firm pull
+      on either cable does not move the board.
 
 ## Timings you may want to change
 

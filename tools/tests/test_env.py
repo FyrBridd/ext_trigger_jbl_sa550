@@ -29,3 +29,18 @@ def test_avr_gcc_knows_attiny412(tmp_path):
 
 def test_host_gcc_and_make():
     assert shutil.which("gcc") and shutil.which("make")
+
+
+def test_cadquery_builds_a_solid():
+    import importlib.metadata
+
+    import cadquery as cq
+
+    assert importlib.metadata.version("cadquery") == "2.8.0"
+    assert abs(cq.Workplane("XY").box(1, 2, 3).val().Volume() - 6.0) < 1e-9
+
+
+def test_drawing_tools_present():
+    import matplotlib  # noqa: F401
+
+    assert shutil.which("rsvg-convert") and shutil.which("pdfinfo")

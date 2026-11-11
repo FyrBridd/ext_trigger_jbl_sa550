@@ -30,3 +30,11 @@ fw-test:
 
 fw:
 	$(DEV) make -C firmware avr
+
+# Enclosure: build both half-shells and their review files into enclosure/out/, and check the fit.
+.PHONY: enc enc-test
+enc:
+	$(PY) enclosure.export
+
+enc-test:
+	$(DEV) pytest enclosure/tests -q

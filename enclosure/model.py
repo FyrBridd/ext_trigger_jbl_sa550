@@ -54,6 +54,7 @@ def lower() -> cq.Workplane:
     for collar in p.COLLARS:
         tools += _cable_way(collar)
     tools += [k.rod_z(xy, p.PILOT_D, -p.PILOT_DEPTH, _OVER) for xy in p.SCREW_XY]
+    tools += [k.rod_z(xy, p.PILOT_RELIEF_D, -p.PILOT_RELIEF_DEPTH, _OVER) for xy in p.SCREW_XY]
     return _cut_all(_half_cylinder(upper=False), tools)
 
 

@@ -73,3 +73,11 @@ def test_screw_holes(lower):
         assert k.overlap(lower, k.screw(xy, p.PILOT_D - 0.05, -p.PILOT_DEPTH + 0.05, 0)) == 0.0
         assert k.overlap(lower, k.screw(xy, p.PILOT_D + 0.4, -p.PILOT_DEPTH + 0.05, 0)) > 0.0   # not oversize
         assert k.overlap(lower, k.screw(xy, p.PILOT_D - 0.05, -p.PILOT_DEPTH - 1.0, -p.PILOT_DEPTH - 0.1)) > 0.0  # blind
+
+
+def test_pilot_holes_are_relieved_at_the_mouth(lower):
+    for xy in p.SCREW_XY:
+        mouth = k.screw(xy, p.SCREW_THREAD, -p.PILOT_RELIEF_DEPTH + 0.02, 0)
+        assert k.overlap(lower, mouth) == 0.0                                 # the thread starts in clear air
+        below = k.screw(xy, p.SCREW_THREAD, -p.PILOT_RELIEF_DEPTH - 1.0, -p.PILOT_RELIEF_DEPTH - 0.1)
+        assert k.overlap(lower, below) > 0.0                                  # then bites

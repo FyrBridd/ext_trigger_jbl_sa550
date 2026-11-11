@@ -57,4 +57,5 @@ def test_led_and_programming_pins_are_on_the_right_side():
 
 def test_screw_rod():
     rod = bbox(k.screw(p.SCREW_XY[0], 2.0, -3, 4))
-    assert close(rod, (-10.8, -8.8, 4.2, 6.2, -3, 4))
+    assert p.SCREW_XY[0] == (-10.1, 5.1)
+    assert close(rod, (-11.1, -9.1, 4.1, 6.1, -3, 4))

@@ -114,6 +114,7 @@ def test_nothing_else_is_cut_away(upper, lower):
         + (max(xs) - min(xs) + 2 * m) * (max(ys) - min(ys) + 2 * m) * (p.Z_TRENCH - p.PIN_POCKET_Z)   # pin pocket
         + chambers + bores
         + 4 * math.pi / 4 * p.PILOT_D ** 2 * p.PILOT_DEPTH                                   # pilot holes
+        + 4 * math.pi / 4 * (p.PILOT_RELIEF_D ** 2 - p.PILOT_D ** 2) * p.PILOT_RELIEF_DEPTH  # and their relieved mouths
     )
     assert math.isclose(k.volume(lower), half - lower_cuts, rel_tol=0.005)
 

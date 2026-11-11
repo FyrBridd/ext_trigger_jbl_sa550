@@ -56,7 +56,7 @@ Z_RAIL = round(Z_BOARD_TOP + RAIL_GAP, 3)
 CHAMBER_L = 6.0           # length of the wire chamber between each collar and the board
 CHAMBER_R = 5.5           # its radius
 WIRE_ROOM_R = 5.0         # the wires need a clear space of this radius in each chamber
-COLLAR_L = 7.0            # length of each cable collar
+COLLAR_L = 7.6            # length of each cable collar: a screw's counterbore with 1.2 mm of wall each side
 X_MIN = round(-(GAP + CHAMBER_L + COLLAR_L), 3)
 X_MAX = round(BOARD_L + GAP + CHAMBER_L + COLLAR_L, 3)
 BORE_CLEARANCE = 0.3      # collar bore diameter = cable jacket + this
@@ -64,17 +64,21 @@ RIB_BITE = 0.7            # rib inner diameter = cable jacket - this
 RIB_W = 1.0               # each rib is a ring this wide
 RIB_AT = (1.5, 4.5)       # rib centres, measured from the shell's end
 
-# --- screws: thread-forming, for plastics -------------------------------------------
+# --- screws: thread-forming, for plastics (docs/enclosure.md names the part) ----------
 SCREW_THREAD = 2.2
 SCREW_LEN = 8.0
-SCREW_HEAD_D = 4.2        # largest head allowed for
-SCREW_HEAD_H = 1.7
-PILOT_D = 1.8             # in the lower half
+SCREW_HEAD_D = 4.2        # largest head allowed for (the named screw's is 3.9)
+SCREW_HEAD_H = 1.7        # (the named screw's is 1.5)
+DRIVER_BLADE_D = 4.5      # round blade of a PZ1 screwdriver, which has to enter the counterbore
+PILOT_D = 1.8             # in the lower half; the supplier's figure for nylon is 0.75 x thread = 1.65,
+                          # and JLC3DP's holes come out small
 PILOT_DEPTH = 5.5
+PILOT_RELIEF_D = 2.4      # the mouth of each pilot hole is opened to just over the thread's diameter,
+PILOT_RELIEF_DEPTH = 0.6  # so plastic raised by the thread cannot hold the halves apart
 CLEAR_D = 2.6             # through the upper half
-CBORE_D = 4.6             # counterbore for the head
+CBORE_D = 5.2             # counterbore for the head and the driver's blade
 SEAT_Z = 3.0              # the head sits on a seat at this height
-SCREW_Y = 5.2
+SCREW_Y = 5.1
 SCREW_XY = tuple(
     (round(x, 3), y)
     for x in (X_MIN + COLLAR_L / 2, X_MAX - COLLAR_L / 2)   # the middle of each collar

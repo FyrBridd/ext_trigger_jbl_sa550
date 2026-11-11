@@ -15,14 +15,14 @@ hardware.
 | # | Quantity | Result | Limit | Margin |
 |---|---|---|---|---|
 | 1 | Supply current, worst case | 15 mA | 220 mA trigger rating | 14× |
-| 2 | Regulator input voltage at 15 mA | 10.2 V | 3.4 V minimum | 6.8 V |
-| 2 | Lowest trigger voltage that still works | 5.2 V | 12 V nominal | 6.8 V |
+| 2 | Regulator input voltage at 15 mA | 9.9 V | 3.4 V minimum | 6.5 V |
+| 2 | Lowest trigger voltage that still works | 5.5 V | 12 V nominal | 6.5 V |
 | 3 | Regulator dissipation, worst case | 0.10 W | 0.5 W (SOT-89) | 5× |
 | 4 | Inrush peak at plug-in | 117 mA | 220 mA trigger rating | 1.9× |
 | 5 | R1 dissipation | 23 mW | 100 mW | 4× |
 | 6 | Worst-case clamp voltage at the regulator | 24.1 V | 30 V | 5.9 V |
 | 6 | Worst-case clamp voltage across C1 | 24.1 V | 25 V | 0.9 V (see note) |
-| 7 | Reverse voltage across D1 | 12 V | 40 V | 3.3× |
+| 7 | Reverse voltage across D1 or D4, wires swapped | 12 V | 40 V | 3.3× |
 | 8 | LED current | 1.3 mA | 20 mA pin limit | 15× |
 | 9 | Serial timing error, worst case | about ±2 % | ±2 % recommended | none to spare (see item 9) |
 | 10 | RS232 output swing | ±5.0 V minimum | ±3 V needed | 2 V |
@@ -48,21 +48,26 @@ of it in the worst case.
 
 ## 2. Voltage at the regulator input
 
-`V_IN = V_trigger − I × R1 − V_F(D1)`
+`V_IN = V_trigger − I × R1 − V_F(D1) − V_F(D4)`
 
-- R1 = 100 Ω [spec]; D1 forward drop about 0.3 V at 15 mA [mem].
-- At 12 V and 15 mA: `12 − 1.5 − 0.3 = 10.2 V`.
+- R1 = 100 Ω [spec]. D1 (supply wire) and D4 (return wire) each drop about
+  0.3 V at 15 mA [mem].
+- At 12 V and 15 mA: `12 − 1.5 − 0.3 − 0.3 = 9.9 V`.
+- That is the board on its own. Connected to the amp, the return current
+  takes the ground path through the amp instead (item 7), D4 carries nothing,
+  and V_IN is 0.3 V higher.
 - The HT7533-1 needs its input above `3.3 V + dropout`; dropout is about
-  0.1 V at this current [mem]. Margin: 6.8 V.
-- Turned round, the trigger can sag to `3.4 + 0.3 + 1.5 = 5.2 V` at 15 mA
-  before the 3.3 V rail drops.
+  0.1 V at this current [mem]. Margin: 6.5 V.
+- Turned round, the trigger can sag to `3.4 + 0.3 + 0.3 + 1.5 = 5.5 V` at
+  15 mA before the 3.3 V rail drops.
 
 ## 3. Regulator dissipation
 
 `P = (V_IN − 3.3 V) × I`
 
-- Worst case: `(10.2 − 3.3) × 0.015 = 0.10 W`.
-- Typical (5.3 mA, so V_IN = 11.2 V): `7.9 × 0.0053 = 0.04 W`.
+- Worst case: `(10.2 − 3.3) × 0.015 = 0.10 W` (connected to the amp, so
+  without D4's drop).
+- Typical (5.3 mA, so V_IN = 10.9 V): `7.6 × 0.0053 = 0.04 W`.
 - SOT-89 is good for about 0.5 W [mem], roughly 200 °C/W, so the worst case
   is a rise of about 20 °C.
 - Maximum input 30 V and 70 mA guaranteed output (100 mA typical) [DS].
@@ -95,14 +100,42 @@ of it in the worst case.
 
 ## 7. Reverse polarity
 
-- With the trigger wires swapped, D1 blocks. It sees 12 V reverse against a
-  40 V rating [DS]. D2 is bidirectional and does not conduct at 12 V.
-- **This protects the dongle only.** The board's ground is also joined to the
-  amp's ground by the serial cable, and the amp's ground reaches the WiiM's
-  ground through the audio cable. With swapped trigger wires the WiiM's 12 V
-  output would be shorted to its own ground through that path, without
-  passing through R1 or D1. Check polarity with a meter before soldering, and
-  power up the first time with the serial cable unplugged.
+Each trigger wire reaches the circuit only through a Schottky diode: D1 in
+the supply wire, D4 in the return wire. Both are B5819W, 40 V [DS].
+
+With the wires swapped:
+
+- The wire that should be +12 V is at 0 V. D1 blocks it from the regulator.
+- The wire that should be ground is at +12 V. D4 blocks it from the board's
+  ground. D4 sees 12 V reverse against its 40 V rating.
+- D2 is bidirectional and does not conduct at 12 V.
+- So neither wire has a path to anything, apart from the diodes' leakage
+  (microamps). The dongle does not start, and nothing is stressed.
+
+**Why D4 is there.** The board's ground is also joined to the amp's ground
+by the serial cable, and the amp's ground reaches the WiiM's ground through
+the audio cable. Without D4, a swapped +12 V wire on the board's ground would
+short the WiiM's trigger output through that path, without passing through
+R1 or D1. With D4 the miswire is harmless to the WiiM as well, whether or not
+the serial cable is connected.
+
+**What D4 costs.**
+
+- On the bench, with nothing else connected, the board's ground sits about
+  0.3 V above the trigger's return wire.
+- Connected to the amp, the ground path through the amp and the audio cable
+  has millivolts across it, far too little to turn D4 on. So all of the
+  dongle's return current, not just a share of it, flows through the serial
+  cable's ground wire and the audio cable's screens.
+- Estimate of the effect: the screens and their contacts are perhaps 25 to
+  50 mΩ [mem]. The steady 5 to 15 mA puts well under 1 mV of DC across
+  them, which is not audible. The part that changes is about 3 mA for under
+  2 ms each time the dongle sends a query, every 2 s: 0.08 to 0.15 mV, which
+  is 82 to 88 dB below a 2 V line signal. I expect that to be inaudible, but
+  it is an estimate, not a measurement. The acceptance check "no clicks in
+  normal listening" in the bring-up guide covers it.
+- Before D4, about 40 % of the same current already took that path, because
+  the two ground routes are of similar resistance.
 
 ## 8. LED current
 

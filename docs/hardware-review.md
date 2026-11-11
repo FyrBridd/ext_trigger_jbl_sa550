@@ -40,6 +40,7 @@ These are decisions made while building. Say if any of them is wrong.
 | Part names on the silkscreen | **Not printed** | No room between the parts. They are on page 1 of `board.pdf`. The silkscreen has `+ G` and `G R T` beside the wire pads on top, and the full legend underneath. |
 | Routed by script | **Autorouted** (Freerouting), three connections by hand | The board is dense. The result is saved and checked by KiCad's own rule check. |
 | 22 Ω input resistor | **100 Ω** | Keeps plug-in inrush at 117 mA, inside the trigger's 220 mA rating. Already in the design document. |
+| One protection diode, in the supply wire | **A second one, D4, in the return wire** (added 2026-11-11) | With one diode, swapped trigger wires were harmless to the dongle but would have shorted the WiiM's trigger output through the shared ground. With D4 a miswire is harmless to both. Same part as D1; the board is still 13 × 45 mm. |
 
 The wire pad labels underneath give the DB9 pin each wire goes to:
 `2 TX` (dongle output, to the amp's pin 2), `3 RX` (from the amp's pin 3),
@@ -85,7 +86,7 @@ coordinates.
 ## 4. Automated checks
 
 All run by `make hw-test` (or `tools/dev pytest tools/tests hardware/tests -q`).
-Result today: all pass (73 checks across the hardware and tools; the firmware has its own, `make fw-test`).
+Result today: all pass (77 checks across the hardware and tools; the firmware has its own, `make fw-test`).
 
 | Check | Result |
 |---|---|
@@ -107,7 +108,8 @@ real board.
 
 | Point | Status | What to do |
 |---|---|---|
-| **Trigger polarity** | Not confirmed; tip-positive is the convention. | Meter the WiiM's jack before soldering. Swapped wires would short the WiiM's trigger output through the shared ground (see calculations, item 7). Power up the first time with the serial cable unplugged. |
+| **Trigger polarity** | Not confirmed; tip-positive is the convention. | Meter the WiiM's jack before soldering. If the wires do end up swapped, D1 and D4 block and nothing is harmed (calculations, item 7); the dongle just does not start. |
+| **Return current in the audio ground** | By my estimate inaudible (calculations, item 7); not measured. | Listen for ticks every 2 seconds with the volume up and nothing playing, at bring-up. |
 | **Which DB9 pin the amp transmits on** | Inferred as pin 3. | With "RS232 Stdby" on, the amp's transmit pin idles negative against pin 5. If it is pin 2, swap the `TX` and `RX` wires. |
 | **Regulator with a ceramic output capacitor** | Not stated by Holtek; widely done. | Scope the 3.3 V rail at bring-up. If it rings, fit a tantalum 10 µF at C2. |
 | **LED orientation** | The LED's datasheet numbers its pins the opposite way to KiCad. The connections are right by function. | Check the LED in JLCPCB's placement preview (section 6). |
@@ -131,7 +133,8 @@ real board.
    | U1 (SOT-89) | The wide tab faces the amp end (right); the three legs face the trigger end. |
    | U2 (SOIC-8) | Pin 1 dot at the bottom-left of the part, nearest C3. |
    | U3 (TSSOP-16) | Pin 1 dot at the top-right of the part, nearest C4. |
-   | D1 (Schottky) | Cathode band towards the amp end (right). |
+   | D1 (Schottky, top row) | Cathode band towards the amp end (right). |
+   | D4 (Schottky, by the trigger pads) | Cathode band towards the trigger end (left): the opposite way to D1. |
    | D3 (LED) | Cathode mark towards the amp end (right); the anode is next to R2. |
    | D2 (TVS) | Either way round; it is bidirectional. |
 

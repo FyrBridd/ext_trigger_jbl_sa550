@@ -29,6 +29,15 @@ mark, so there is nothing to check for it in the placement preview; the serial
 baud rate depends on the firmware applying the factory oscillator correction,
 which the firmware plan already does.
 
+### Addendum, 2026-11-11: D4 added after this review
+
+A second B5819W, D4, was added in the trigger's return wire (cathode to the
+trigger's ground pad, anode to board ground). It is the same part, symbol
+and footprint as D1, so the D1 rows below (pinout, cathode pad, 40 V reverse
+rating) apply to it unchanged. Its connections are checked by
+`test_reversed_trigger_wires_have_no_path_to_anything`. It was added by the
+design's author and has not had a separate independent review.
+
 ## Checks
 
 Page numbers are PDF page numbers of the documents listed under Sources.

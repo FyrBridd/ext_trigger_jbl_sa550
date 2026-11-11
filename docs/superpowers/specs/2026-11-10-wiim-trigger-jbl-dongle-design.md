@@ -174,7 +174,14 @@ Power path, in order from the trigger pad:
    something to work against. It drops about 1.5 V at 15 mA.
 2. **D2, SMF15CA TVS to ground.** Clamps spikes below the regulator's 30 V
    limit. **[call]** Cheap insurance; a "preferred extended" part.
-3. **D1, B5819W series Schottky.** Reverse-polarity protection.
+3. **D1, B5819W series Schottky.** Reverse-polarity protection in the
+   supply wire.
+   **D4, a second B5819W, in the return wire** between the trigger's ground
+   pad and the board's ground **[decided 2026-11-11]**. Without it, swapped
+   trigger wires would put the WiiM's +12 V on the board's ground, which is
+   shared with the amp and, through the audio cable, with the WiiM, and so
+   short the WiiM's trigger output. With both diodes a miswire is harmless
+   to the dongle and to the WiiM.
 4. **C1, 10 µF 25 V.** Input capacitor.
 5. **U1, HT7533-1, 3.3 V regulator** (30 V maximum input, 100 mA), with
    **C2, 10 µF** on its output.
@@ -275,6 +282,11 @@ alongside the audio cable. This is how ordinary trigger cables behave and is
 unlikely to cause hum. If it does, the remedy is an isolated revision; that is
 out of scope here.
 
+Because of D4, the dongle's supply return current (5 to 15 mA) flows through
+that ground path whenever the amp is connected, instead of sharing it with the
+trigger cable. The estimated effect on the audio ground is tens of microvolts;
+see `docs/hardware-calculations.md`, item 7.
+
 ## 6. Bill of materials and stock
 
 Stock and status were read from JLCPCB's parts API on 2026-11-10. "Basic"
@@ -286,7 +298,7 @@ parts carry no fee; each "extended" part adds a one-off loading fee per order
 | U2 | ATtiny412-SSNR | C1337190 | SOIC-8 | Extended | 2,167 |
 | U3 | SP3232EEY-L/TR | C13482 | TSSOP-16 | Basic | 256,189 |
 | U1 | HT7533-1 | C14289 | SOT-89 | Basic | 229,965 |
-| D1 | B5819W | C8598 | SOD-123 | Basic | 728,473 |
+| D1, D4 | B5819W | C8598 | SOD-123 | Basic | 728,473 |
 | D2 | SMF15CA | C19077510 | SOD-123FL | Preferred extended | 8,220,203 |
 | D3 | KT-0603R (red LED) | C2286 | 0603 | Basic | 6,247,584 |
 | C1, C2 | 10 µF 25 V | C15850 | 0805 | Basic | 8,504,725 |

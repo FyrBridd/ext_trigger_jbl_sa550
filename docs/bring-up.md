@@ -29,8 +29,9 @@ Board reference (top view, trigger end on the left):
   3.5 mm plug in its trigger socket.
 - **Expect:** about +12 V on the tip relative to the sleeve.
 - **If not:** note which is positive. The positive wire goes to `+`.
-- **Why it matters:** swapped wires would short the WiiM's trigger output
-  through the system's shared ground once the serial cable is connected.
+- **Why it matters:** it tells you which wire goes to `+`. If the wires do
+  get swapped, the board's two input diodes block and nothing is harmed, but
+  the dongle will not start.
 
 ### A2. Amp setting
 
@@ -64,10 +65,12 @@ Board reference (top view, trigger end on the left):
 - **Do:** Solder only the trigger cable (`+` and `G`). Each wire goes down
   through its strain-relief hole at the board end, along the underside, and
   up through its pad; solder on top. Plug into the WiiM and start playback.
-  Do **not** connect the serial cable yet.
+  Leave the serial cable off for now, so there is one thing to check at a
+  time.
 - **Expect:** 3.3 V (3.2–3.4 V) between test pads `3V3` and `GND`; about
-  11 to 11.7 V on `VIN`; LED off (blank chip).
-- **If `VIN` is 0 V:** polarity is reversed, or the trigger is off.
+  11 to 11.4 V on `VIN`; LED off (blank chip).
+- **If `VIN` is 0 V:** the two trigger wires are swapped (harmless: swap
+  them over), or the trigger is off.
 - **If `3V3` is wrong but `VIN` is right:** stop; do not go on.
 
 ### B2. The 3.3 V rail on the scope

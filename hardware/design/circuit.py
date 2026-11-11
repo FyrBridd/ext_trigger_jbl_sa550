@@ -34,6 +34,7 @@ _parts = [
     Part("D1", "B5819W", "Device:D_Schottky", "Diode_SMD:D_SOD-123", "C8598", True),
     Part("D2", "SMF15CA", "Device:D_TVS", "Diode_SMD:D_SOD-123F", "C19077510", True),
     Part("D3", "RED", "Device:LED", "LED_SMD:LED_0603_1608Metric", "C2286", True),
+    Part("D4", "B5819W", "Device:D_Schottky", "Diode_SMD:D_SOD-123", "C8598", True),
     Part("C1", "10u 25V", "Device:C", C0805, "C15850", True),
     Part("C2", "10u 25V", "Device:C", C0805, "C15850", True),
     *[Part(f"C{i}", "100n 50V", "Device:C", C0603, "C14663", True) for i in range(3, 9)],
@@ -49,12 +50,18 @@ PARTS: dict[str, Part] = {p.ref: p for p in _parts}
 
 NETS: dict[str, list[tuple[str, str]]] = {
     # Trigger input and 3.3 V supply
+    # Each trigger wire meets the circuit only through a diode (D1 in the supply
+    # leg, D4 in the return leg), so swapped wires have no path to anything. In
+    # particular the return wire is not tied straight to ground: ground is shared
+    # with the amp and, through the audio cable, with the WiiM, and a swapped
+    # +12 V wire on it would short the WiiM's trigger output.
     "TRIG_IN": [("J1", "1"), ("R1", "1")],
+    "TRIG_RTN": [("J1", "2"), ("D4", "1")],                        # D4.1 is the cathode
     "TRIG_R": [("R1", "2"), ("D2", "1"), ("D1", "2")],            # D1.2 is the anode
     "VIN": [("D1", "1"), ("C1", "1"), ("U1", "2"), ("TP1", "1")],  # D1.1 is the cathode
     "+3V3": [("U1", "3"), ("C2", "1"), ("C3", "1"), ("U2", "1"), ("U3", "16"),
              ("C8", "1"), ("R3", "1"), ("J3", "2"), ("TP2", "1")],
-    "GND": [("J1", "2"), ("D2", "2"), ("C1", "2"), ("U1", "1"), ("C2", "2"), ("C3", "2"),
+    "GND": [("D4", "2"), ("D2", "2"), ("C1", "2"), ("U1", "1"), ("C2", "2"), ("C3", "2"),
             ("U2", "8"), ("U3", "15"), ("U3", "10"), ("C8", "2"), ("C6", "2"), ("C7", "1"),
             ("D3", "1"), ("J2", "3"), ("J3", "3"), ("TP3", "1")],  # D3.1 is the cathode
     # Controller to serial driver (logic level)

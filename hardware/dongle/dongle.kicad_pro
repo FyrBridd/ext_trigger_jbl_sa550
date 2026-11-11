@@ -356,6 +356,10 @@
       {
         "netclass": "Power",
         "pattern": "/GND"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "/TRIG_RTN"
       }
     ]
   },

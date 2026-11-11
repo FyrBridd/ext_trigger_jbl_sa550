@@ -21,6 +21,7 @@ PLACEMENTS: dict[str, tuple[float, float, float]] = {
     "D1": (11.2, 2.9, 180),
     "C1": (11.7, 5.6, 180),
     "D2": (9.6, 10.5, 0),
+    "D4": (10.3, 8.0, 0),
     "U1": (16.6, 4.3, 0),
     "C2": (16.6, 8.5, 0),
     # programming footprint: the 3.3 V and UPDI pads face the regulator, the ground
@@ -76,7 +77,7 @@ TRACK_POWER = 0.4
 CLEARANCE = 0.2
 ROUTING_CLEARANCE = 0.26   # what the autorouter is asked to keep, leaving margin for its neck-downs being widened back
 VIA_DIAMETER, VIA_DRILL = 0.6, 0.3
-POWER_NETS = ["TRIG_IN", "TRIG_R", "VIN", "+3V3", "GND"]
+POWER_NETS = ["TRIG_IN", "TRIG_RTN", "TRIG_R", "VIN", "+3V3", "GND"]
 
 # Ground is routed as tracks like every other net, then covered by a filled pour
 # on both layers.

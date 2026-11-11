@@ -134,7 +134,7 @@ def test_silkscreen_text_is_printable_by_jlcpcb(board):
 
 # --- routing -----------------------------------------------------------------
 
-WIDE_NETS = {"/TRIG_IN", "/TRIG_R", "/VIN", "+3V3", "GND"}
+WIDE_NETS = {"/TRIG_IN", "/TRIG_RTN", "/TRIG_R", "/VIN", "+3V3", "GND"}   # everything that carries supply current
 
 
 def test_drc_clean_with_schematic_parity(board):

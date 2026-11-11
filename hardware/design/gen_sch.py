@@ -232,8 +232,12 @@ def _draw(s: Sheet) -> None:
     s.wire((70, 30), c2_top)
     s.wire(c2_bottom, (70, 38))
     s.gnd(70, 38)
-    s.wire(P("J1", "2"), (18, 31), (18, 34))
-    s.gnd(18, 34)
+    d4_k, d4_a = s.two_pin("D4", 21, 35, "1", "down")         # cathode to the return wire
+    s.wire(P("J1", "2"), (21, 31), d4_k)
+    s.label("TRIG_RTN", 16.5, 31)
+    s.wire(d4_a, (21, 38))
+    s.gnd(21, 38)
+    s.note("D1 and D4 block if the two trigger wires are swapped.", 10, 25.9)
     # ground reference: its test pad, and the flag KiCad's rule check wants
     s.wire((16, 44), (24, 44))
     s.flag("#FLG01", 16, 44)

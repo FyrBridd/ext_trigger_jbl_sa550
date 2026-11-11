@@ -446,7 +446,7 @@ Status LED **[call]**:
 - A small hole over the LED.
 - The programming footprint is reached by opening the shell.
 - Appearance does not matter; protection does. **[decided]**
-- Size as built: 20 mm diameter and 72.8 mm long (`docs/enclosure.md`). The
+- Size as built: 20 mm diameter and 74.8 mm long (`docs/enclosure.md`). The
   first estimate was 17–18 × 60 mm; the board grew to 13 × 45 mm, and 20 mm
   is the least that leaves the wall the screws need. Smaller is better but
   not at the cost of wall strength.
@@ -474,7 +474,8 @@ Status LED **[call]**:
   thread-forming screws for plastics (named in `docs/enclosure.md`), into
   pilot holes modelled at 1.8 mm with at least 1.6 mm of plastic round them,
   through 2.6 mm clearance holes in the other half, heads in 5.2 mm
-  counterbores that admit a PZ1 screwdriver.
+  counterbores that admit a PZ1 screwdriver. The trigger end is 2 mm longer
+  than the amp end, so the lid's holes line up only one way round.
 - The two halves are uploaded as two separate files in one order.
 
 ## 9. Tooling and verification

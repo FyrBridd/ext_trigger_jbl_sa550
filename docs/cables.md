@@ -77,6 +77,14 @@ The jacket diameters, 3.7 mm and 4.8 mm, are what the enclosure's cable
 collars are sized to (`docs/enclosure.md`). Check both with calipers when
 the cables arrive, before the shell is ordered.
 
+## Preparing the ends
+
+Leave 17 mm of each core free beyond the jacket, bared end included (15 to
+19 mm will do), on both cables. With that length the end of each jacket lies
+inside its collar in the shell, where the ribs grip it
+(`docs/enclosure.md`, section 7). The figure is worked out from the wire's
+path through the board, not tried.
+
 ## Which wire goes where
 
 **Trigger cable.** The drawing gives red as the plug's tip and black as its

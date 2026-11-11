@@ -57,6 +57,12 @@ Board reference (top view, trigger end on the left):
   1 mm, and must be under 1.25 mm. Buzz out which wire goes to the 3.5 mm
   tip and sleeve, and which three go to pins 2, 3 and 5 of the DB9 female
   plug. Cut the six unused serial wires back to different lengths.
+- **Core length:** on both cables, leave 17 mm of each core free beyond the
+  jacket, bared end included (15 to 19 mm will do). The trigger cable comes
+  ready stripped; if more than that is free, cut the cores back and bare
+  the ends again. This length puts the end of each jacket inside its collar
+  when the shell is fitted (`docs/enclosure.md`, section 7). It is worked
+  out, not tried: if you have the shell already, check against it first.
 
 ## Part B — the board alone
 

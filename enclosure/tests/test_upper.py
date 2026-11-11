@@ -125,17 +125,15 @@ def test_screws_reach_their_pilot_holes(upper, lower):
         assert k.overlap(lower, thread) > 0.0 and k.overlap(upper, k.screw(xy, p.SCREW_THREAD, 0, p.SEAT_Z)) == 0.0
 
 
-def test_nothing_else_is_cut_away(upper, lower):
-    # Each half is its half-cylinder less the cuts listed here, worked out by hand, and nothing more:
-    # a hole in the wrong place, or one left out, shows as plastic missing or left over.
+def _expected_volumes() -> tuple[float, float]:
+    """What each half's volume should be: its half-cylinder less the cuts listed here, worked out
+    by hand (the head recesses by building them again from their description)."""
     r = p.OD / 2
     half = math.pi * r ** 2 / 2 * (p.X_MAX - p.X_MIN)
     pocket_l = p.BOARD_L + 2 * p.GAP
     chambers = 2 * (math.pi * p.CHAMBER_R ** 2 / 2 * p.CHAMBER_L)
-    bores = sum(
-        math.pi / 8 * (c.bore_d ** 2 * (p.COLLAR_L - len(p.RIB_AT) * p.RIB_W) + c.rib_d ** 2 * len(p.RIB_AT) * p.RIB_W)
-        for c in p.COLLARS
-    )
+    ribs = len(p.RIB_AT) * p.RIB_W
+    bores = sum(math.pi / 8 * (c.bore_d ** 2 * (c.length - ribs) + c.rib_d ** 2 * ribs) for c in p.COLLARS)
     xs = [x for x, _ in p.J3_HOLES_XY]
     ys = [y for _, y in p.J3_HOLES_XY]
     m = p.PIN_POCKET_MARGIN
@@ -147,10 +145,8 @@ def test_nothing_else_is_cut_away(upper, lower):
         + 4 * math.pi / 4 * p.PILOT_D ** 2 * p.PILOT_DEPTH                                   # pilot holes
         + 4 * math.pi / 4 * (p.PILOT_RELIEF_D ** 2 - p.PILOT_D ** 2) * p.PILOT_RELIEF_DEPTH  # and their relieved mouths
     )
-    assert math.isclose(k.volume(lower), half - lower_cuts, rel_tol=0.005)
-
     rails = 2 * (p.POCKET_HALF_W - p.RAIL_INNER_Y) * (p.BOARD_L - 2 * p.RAIL_END) * (p.Z_CEILING - p.Z_RAIL)
-    led_depth = math.sqrt(r ** 2 - p.LED_XY[1] ** 2) - p.Z_CEILING
+    led_depth = math.sqrt(r ** 2 - p.LED_XY[1] ** 2) - p.Z_CEILING      # on the hole's axis
     upper_cuts = (
         2 * p.POCKET_HALF_W * pocket_l * p.Z_CEILING - rails                                 # cavity less the rails
         + chambers + bores
@@ -158,4 +154,41 @@ def test_nothing_else_is_cut_away(upper, lower):
         + _head_recesses()                                                                   # counterbores
         + math.pi / 4 * p.LED_HOLE_D ** 2 * led_depth                                        # LED hole
     )
-    assert math.isclose(k.volume(upper), half - upper_cuts, rel_tol=0.005)
+    return half - lower_cuts, half - upper_cuts
+
+
+VOLUME_TOLERANCE = 0.5      # mm^3: a 1 mm hole 1 mm deep is 0.8
+
+
+def test_nothing_else_is_cut_away(upper, lower):
+    # A hole in the wrong place, or one left out, shows as plastic missing or left over.
+    expected_lower, expected_upper = _expected_volumes()
+    assert math.isclose(k.volume(lower), expected_lower, abs_tol=VOLUME_TOLERANCE)
+    assert math.isclose(k.volume(upper), expected_upper, abs_tol=VOLUME_TOLERANCE)
+
+
+def test_a_stray_hole_would_be_noticed(upper, lower):
+    # the check above is only as good as its tolerance: spoil each half slightly and it must object
+    expected_lower, expected_upper = _expected_volumes()
+    holed_lid = upper.cut(k.rod_z((10, -3), 2.0, 0, p.OD))                      # a second 2 mm hole through the lid
+    assert not math.isclose(k.volume(holed_lid), expected_upper, abs_tol=VOLUME_TOLERANCE)
+    plugged_lid = upper.union(k.rod_z(p.LED_XY, p.LED_HOLE_D, p.Z_CEILING + 0.5, p.Z_CEILING + 1.5))   # LED hole blocked
+    assert not math.isclose(k.volume(plugged_lid), expected_upper, abs_tol=VOLUME_TOLERANCE)
+    holed_floor = lower.cut(k.rod_z((30, 0), 1.0, -p.OD, 0))                    # a 1 mm hole through the floor
+    assert not math.isclose(k.volume(holed_floor), expected_lower, abs_tol=VOLUME_TOLERANCE)
+
+
+def test_the_lid_goes_on_only_one_way_round(upper):
+    # Turned end for end, the lid's screw holes must miss the pilot holes by so much that a screw
+    # cannot be started: wherever it sits in the lid's hole, its axis is on solid plastic, well
+    # clear of the pilot hole's mouth.
+    middle = (p.X_MIN + p.X_MAX) / 2
+    slop = (p.CLEAR_D - p.SCREW_THREAD) / 2
+    turned_holes = [(2 * middle - x, -y) for x, y in p.SCREW_XY]
+    for pilot in p.SCREW_XY:
+        miss = min(math.dist(pilot, hole) for hole in turned_holes)
+        assert miss - slop >= p.PILOT_RELIEF_D / 2 + 0.5
+    turned = upper.rotate((middle, 0, 0), (middle, 0, 1), 180)
+    for pilot in p.SCREW_XY:              # and a screw standing in each pilot hole is stopped by the turned lid
+        shank = k.screw(pilot, p.SCREW_THREAD, 0.05, p.SEAT_Z)
+        assert k.overlap(turned, shank) > 0.8 * k.volume(shank)

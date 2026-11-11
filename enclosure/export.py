@@ -249,10 +249,10 @@ def _page_along(pdf, halves):
               f"ribs: {_mm(collar.rib_d)} mm across,\nbore {_mm(collar.bore_d)} mm")
     _hdim(top, p.X_MIN, p.X_MAX, -R - 3.8, f"{_mm(p.X_MAX - p.X_MIN)} overall", from_y=-R)
     _hdim(top, 0, p.BOARD_L, -R - 1.6, f"board {_mm(p.BOARD_L)}", from_y=p.Z_BOARD_BOTTOM)
-    _hdim(top, p.X_MIN, p.TRIGGER_COLLAR.x_inner, R + 1.2, f"collar {_mm(p.COLLAR_L)}", from_y=R)
+    _hdim(top, p.X_MIN, p.TRIGGER_COLLAR.x_inner, R + 1.2, f"collar {_mm(p.TRIGGER_COLLAR.length)}", from_y=R)
     _hdim(top, p.TRIGGER_COLLAR.x_inner, -p.GAP, R + 1.2, f"wires {_mm(p.CHAMBER_L)}", from_y=R)
     _hdim(top, p.BOARD_L + p.GAP, p.AMP_COLLAR.x_inner, R + 1.2, f"wires {_mm(p.CHAMBER_L)}", from_y=R)
-    _hdim(top, p.AMP_COLLAR.x_inner, p.X_MAX, R + 1.2, f"collar {_mm(p.COLLAR_L)}", from_y=R)
+    _hdim(top, p.AMP_COLLAR.x_inner, p.X_MAX, R + 1.2, f"collar {_mm(p.AMP_COLLAR.length)}", from_y=R)
     _vdim(top, -R, R, p.X_MIN - 9.5, f"{_mm(p.OD)} diameter", from_x=p.X_MIN, text_dx=-1.2)
     _vdim(top, p.Z_BOARD_TOP, p.Z_CEILING, 9.0, _mm(p.TOP_ROOM), text_dx=1.6, rotate=False)
     _vdim(top, p.Z_TRENCH, p.Z_BOARD_BOTTOM, 13.0, _mm(p.UNDER_ROOM), text_dx=1.6, rotate=False)
@@ -271,7 +271,7 @@ def _page_along(pdf, halves):
     _note(bottom, (left, p.SEAT_Z + p.SCREW_HEAD_H), (left + 9, R + 2.6),
           f"{_mm(p.SCREW_THREAD)} × {_mm(p.SCREW_LEN)} mm screw; head up to {_mm(p.SCREW_HEAD_D)} × {_mm(p.SCREW_HEAD_H)} mm\n"
           f"in a {_mm(p.CBORE_D)} mm counterbore")
-    _vdim(bottom, 0, p.SEAT_Z, left - 5.5, f"seat {_mm(p.SEAT_Z)}", from_x=left - p.CBORE_D / 2, text_dx=-1.2)
+    _vdim(bottom, 0, p.SEAT_Z, right + 5.5, f"seat {_mm(p.SEAT_Z)}", from_x=right + p.CBORE_D / 2, text_dx=1.2)
     _vdim(bottom, -p.PILOT_DEPTH, 0, right + 5.5, f"pilot {_mm(p.PILOT_DEPTH)} deep",
           from_x=right + p.PILOT_D / 2, text_dx=1.2)
     _note(bottom, (right - p.PILOT_D / 2, -3.0), (right - 12, -R - 2.6),
@@ -284,6 +284,8 @@ def _page_along(pdf, halves):
           "at this distance from the centreline the board is over\nthe trench; its ledges are further out (page 2, D)")
     _label(bottom, 12, R - 2.5, "upper half")
     _label(bottom, 12, -R + 2.5, "lower half")
+    _label(bottom, p.X_MIN - 6.5, 0.5,
+           f"this end is {_mm(p.LID_KEY)} mm longer:\nturned end for end,\nthe lid's screw holes\nmiss the pilot holes")
 
     _page(pdf, fig, "Dongle enclosure — 1 of 3: sections along the shell",
           "Millimetres. Hatched = printed nylon (darker: lower half). Green = the board. "
@@ -373,7 +375,7 @@ def _page_across(pdf, halves):
     _screws_across(f)
     pilot_corner = (p.SCREW_Y + p.PILOT_D / 2, -p.PILOT_DEPTH)
     seat_corner = (p.SCREW_Y + p.CBORE_D / 2, p.SEAT_Z)
-    _note(f, pilot_corner, (R + 3.2, -R - 1.4), f"{_mm(R - math.hypot(*pilot_corner))} mm of wall\nat the thinnest")
+    _note(f, pilot_corner, (R + 3.2, -R - 1.4), f"{_mm(R - math.hypot(*pilot_corner))} mm outside the\nhole's bottom corner")
     _note(f, seat_corner, (R + 3.6, R + 0.6), f"{_mm(R - math.hypot(*seat_corner))} mm\nbeside the head")
     _note(f, (-p.SCREW_Y + p.PILOT_D / 2, -2.5), (-R - 3.4, -R - 1.4),
           f"{_mm(p.SCREW_Y - p.PILOT_D / 2 - amp.bore_d / 2)} mm between\nhole and cable bore")

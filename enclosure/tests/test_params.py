@@ -6,8 +6,9 @@ from hardware.design import cables
 
 def test_overall_size():
     assert p.OD == 20.0
-    assert math.isclose(p.X_MAX - p.X_MIN, 72.8)
-    assert math.isclose(p.X_MIN, -(p.GAP + p.CHAMBER_L + p.COLLAR_L))
+    assert math.isclose(p.X_MAX - p.X_MIN, 74.8)
+    assert math.isclose(p.X_MIN, -(p.GAP + p.CHAMBER_L + p.COLLAR_L + p.LID_KEY))
+    assert math.isclose(p.X_MAX, p.BOARD_L + p.GAP + p.CHAMBER_L + p.COLLAR_L)
 
 
 def test_board_frame():
@@ -29,6 +30,7 @@ def test_collars_follow_the_cables():
     assert math.isclose(p.TRIGGER_COLLAR.bore_d, 4.0) and math.isclose(p.TRIGGER_COLLAR.rib_d, 3.0)
     assert math.isclose(p.AMP_COLLAR.bore_d, 5.1) and math.isclose(p.AMP_COLLAR.rib_d, 4.1)
     assert p.TRIGGER_COLLAR.x_outer == p.X_MIN and p.AMP_COLLAR.x_outer == p.X_MAX
+    assert math.isclose(p.TRIGGER_COLLAR.length, p.AMP_COLLAR.length + p.LID_KEY) and p.TRIGGER_COLLAR.nose == p.LID_KEY
     assert math.isclose(p.TRIGGER_COLLAR.x_inner, -6.3) and math.isclose(p.AMP_COLLAR.x_inner, 51.3)
 
 
@@ -62,15 +64,55 @@ def test_jlc3dp_rules():
     assert p.SCREW_LEN - p.SEAT_Z <= p.PILOT_DEPTH        # the screw does not bottom out in its hole
 
 
-def test_plastic_all_round_every_screw_bore():
-    # The wall is thinnest where a bore's far end comes nearest the round outside: at the bottom
-    # outer corner of a pilot hole, and beside the screw head at the level of its seat.
-    radius = (p.OD - 0.3) / 2                              # the print may come out 0.3 mm small
+SMALL_PRINT = 0.3      # JLC3DP's tolerance: the outside may come out this much small on diameter
+
+
+def test_plastic_round_the_thread_the_screws_cut():
+    # More than 1.5 mm (JLC3DP's rule round screws) wherever a screw cuts thread: from the relieved
+    # mouth down to the screw's tip. Thinnest towards the round outside at the tip's depth, and
+    # towards the cable bore.
+    radius = (p.OD - SMALL_PRINT) / 2
+    tip_depth = p.SCREW_LEN - p.SEAT_Z
+    for x, y in p.SCREW_XY:
+        assert radius - math.hypot(abs(y) + p.PILOT_D / 2, tip_depth) > 1.5
+        collar = p.TRIGGER_COLLAR if x < 0 else p.AMP_COLLAR
+        assert abs(y) - p.PILOT_D / 2 - collar.bore_d / 2 > 1.5
+
+
+def test_walls_round_the_rest_of_each_screw_bore():
+    # At least 1.2 mm (JLC3DP's minimum wall) round the parts of each bore that carry no thread:
+    # the pilot hole below the screw's tip, its relieved mouth, the clearance hole, the head recess.
+    radius = (p.OD - SMALL_PRINT) / 2
     for _, y in p.SCREW_XY:
-        assert radius - math.hypot(abs(y) + p.PILOT_D / 2, p.PILOT_DEPTH) > 1.5
-        assert radius - math.hypot(abs(y) + p.CBORE_D / 2, p.SEAT_Z) > 1.5
-        assert abs(y) - p.CLEAR_D / 2 - p.AMP_COLLAR.bore_d / 2 >= 1.2     # clearance hole to the cable bore
-    assert (p.COLLAR_L - p.CBORE_D) / 2 >= 1.2 - 1e-9      # counterbore to the shell's end and to the chamber
+        assert radius - math.hypot(abs(y) + p.PILOT_D / 2, p.PILOT_DEPTH) >= 1.2      # bottom of the pilot hole
+        assert radius - math.hypot(abs(y) + p.CBORE_D / 2, p.SEAT_Z) >= 1.2           # beside the head, at its seat
+        assert abs(y) - p.PILOT_RELIEF_D / 2 - p.AMP_COLLAR.bore_d / 2 >= 1.2         # mouth to the cable bore
+        assert abs(y) - p.CLEAR_D / 2 - p.AMP_COLLAR.bore_d / 2 >= 1.2                # clearance hole to the cable bore
+        assert math.hypot(abs(y) - p.CBORE_D / 2, p.SEAT_Z) - p.AMP_COLLAR.bore_d / 2 >= 1.2   # head recess to the cable bore
+    assert (p.COLLAR_L - p.CBORE_D) / 2 >= 1.2 - 1e-9      # head recess to the shell's end and to the chamber
+
+
+def test_screws_cannot_bottom_out():
+    # The seat and the hole's depth may each be 0.3 mm out, and a blind hole can keep powder at the
+    # bottom: leave 1 mm under the screw's tip.
+    assert p.PILOT_DEPTH - (p.SCREW_LEN - p.SEAT_Z) >= 1.0
+
+
+def test_free_core_length_puts_each_jacket_end_in_its_collar():
+    # docs tell the builder to leave FREE_CORE of each core free beyond the jacket. Worked from the
+    # wire's path: jacket end -> over the board's end -> down the strain-relief hole -> 3 mm along the
+    # underside -> up through the pad. The fixed part of that path is about 7.9 mm (an estimate).
+    fixed, hole_from_end = 7.9, 1.85
+    for collar in p.COLLARS:
+        board_end = 0.0 if collar.x_outer < 0 else p.BOARD_L
+        inner_rib_edge = min(abs(edge - board_end) for span in collar.rib_spans() for edge in span)
+        across = max(abs(y) for x, y in p.WIRE_PADS_XY if abs(x - board_end) < 10)
+        def jacket_end(core):            # how far the jacket's end is from the board's end, wire taut
+            return math.sqrt(max((core - fixed) ** 2 - across ** 2, 0.0)) - hole_from_end
+        assert jacket_end(p.FREE_CORE) <= inner_rib_edge - 0.5          # the jacket reaches past both ribs
+        assert jacket_end(p.FREE_CORE - p.FREE_CORE_TOL) >= 2.0         # short cores still reach, with room to fan out
+        # long cores bow in the chamber: no more than 3 mm of each has to be taken up that way
+        assert jacket_end(p.FREE_CORE + p.FREE_CORE_TOL) - (inner_rib_edge - 0.5) <= 3.0
 
 
 def test_room_for_the_tallest_part_and_the_wires():

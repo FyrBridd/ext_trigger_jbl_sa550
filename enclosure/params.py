@@ -23,8 +23,9 @@ from hardware.design.kicad import parse_sexpr
 _FOOTPRINTS = pathlib.Path(__file__).resolve().parents[1] / "hardware" / "lib" / "dongle.pretty"
 
 # --- the shell ----------------------------------------------------------------------
-OD = 20.0                 # outside diameter: the least that leaves more than 1.5 mm of plastic round
-                          # every screw bore over its whole depth, with the print 0.3 mm small
+OD = 20.0                 # outside diameter: with the print 0.3 mm small it still leaves more than
+                          # 1.5 mm of plastic round the thread each screw cuts, and 1.2 mm round the
+                          # rest of each screw bore
 
 # --- the board ----------------------------------------------------------------------
 BOARD_L = layout.LENGTH
@@ -57,12 +58,15 @@ CHAMBER_L = 6.0           # length of the wire chamber between each collar and t
 CHAMBER_R = 5.5           # its radius
 WIRE_ROOM_R = 5.0         # the wires need a clear space of this radius in each chamber
 COLLAR_L = 7.6            # length of each cable collar: a screw's counterbore with 1.2 mm of wall each side
-X_MIN = round(-(GAP + CHAMBER_L + COLLAR_L), 3)
+LID_KEY = 2.0             # the trigger-end collar has this much plain nose beyond its ribs and screws,
+                          # so its screws are further from the shell's end than the amp end's, and the
+                          # lid's screw holes meet the pilot holes only one way round
+X_MIN = round(-(GAP + CHAMBER_L + COLLAR_L + LID_KEY), 3)
 X_MAX = round(BOARD_L + GAP + CHAMBER_L + COLLAR_L, 3)
 BORE_CLEARANCE = 0.3      # collar bore diameter = cable jacket + this
 RIB_BITE = 0.7            # rib inner diameter = cable jacket - this
 RIB_W = 1.0               # each rib is a ring this wide
-RIB_AT = (1.5, 4.5)       # rib centres, measured from the shell's end
+RIB_AT = (1.5, 4.5)       # rib centres, measured from the shell's end (from the nose's inner end, where there is one)
 
 # --- screws: thread-forming, for plastics (docs/enclosure.md names the part) ----------
 SCREW_THREAD = 2.2
@@ -72,7 +76,7 @@ SCREW_HEAD_H = 1.7        # (the named screw's is 1.5)
 DRIVER_BLADE_D = 4.5      # round blade of a PZ1 screwdriver, which has to enter the counterbore
 PILOT_D = 1.8             # in the lower half; the supplier's figure for nylon is 0.75 x thread = 1.65,
                           # and JLC3DP's holes come out small
-PILOT_DEPTH = 5.5
+PILOT_DEPTH = 6.0         # 1 mm below the screw's tip: holes vary and can keep powder at the bottom
 PILOT_RELIEF_D = 2.4      # the mouth of each pilot hole is opened to just over the thread's diameter,
 PILOT_RELIEF_DEPTH = 0.6  # so plastic raised by the thread cannot hold the halves apart
 CLEAR_D = 2.6             # through the upper half
@@ -83,9 +87,13 @@ HEAD_WALL_MIN = 1.2       # the wall left beside each head by the round outside 
 SCREW_Y = 5.1
 SCREW_XY = tuple(
     (round(x, 3), y)
-    for x in (X_MIN + COLLAR_L / 2, X_MAX - COLLAR_L / 2)   # the middle of each collar
+    for x in (X_MIN + LID_KEY + COLLAR_L / 2, X_MAX - COLLAR_L / 2)   # between each collar's two ribs
     for y in (SCREW_Y, -SCREW_Y)
 )
+
+# --- preparing the cables (docs/bring-up.md, docs/cables.md) ------------------------
+FREE_CORE = 17.0          # leave this much of each core free beyond the jacket, bared end included,
+FREE_CORE_TOL = 2.0       # give or take this: the jacket's end then lies within its collar's grip
 
 # --- openings -----------------------------------------------------------------------
 LED_HOLE_D = 2.0
@@ -142,6 +150,7 @@ class Collar:
     x_outer: float        # at the shell's end
     x_inner: float        # where it opens into the wire chamber
     cable: cables.Cable
+    nose: float = 0.0     # plain bore at the outer end, before the ribs start
 
     @property
     def bore_d(self) -> float:
@@ -151,13 +160,19 @@ class Collar:
     def rib_d(self) -> float:
         return round(self.cable.jacket_dia - RIB_BITE, 3)
 
+    @property
+    def length(self) -> float:
+        return round(abs(self.x_outer - self.x_inner), 3)
+
     def rib_spans(self) -> list[tuple[float, float]]:
         """The x range of each rib, lowest x first."""
         inward = 1 if self.x_inner > self.x_outer else -1
-        centres = sorted(self.x_outer + inward * at for at in RIB_AT)
+        centres = sorted(self.x_outer + inward * (self.nose + at) for at in RIB_AT)
         return [(c - RIB_W / 2, c + RIB_W / 2) for c in centres]
 
 
-TRIGGER_COLLAR = Collar(x_outer=X_MIN, x_inner=round(X_MIN + COLLAR_L, 3), cable=cables.TRIGGER)
+TRIGGER_COLLAR = Collar(
+    x_outer=X_MIN, x_inner=round(X_MIN + LID_KEY + COLLAR_L, 3), cable=cables.TRIGGER, nose=LID_KEY
+)
 AMP_COLLAR = Collar(x_outer=X_MAX, x_inner=round(X_MAX - COLLAR_L, 3), cable=cables.SERIAL)
 COLLARS = (TRIGGER_COLLAR, AMP_COLLAR)

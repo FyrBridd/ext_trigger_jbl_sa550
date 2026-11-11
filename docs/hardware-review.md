@@ -35,7 +35,7 @@ These are decisions made while building. Say if any of them is wrong.
 
 | Design document | Built | Why |
 |---|---|---|
-| About 12 × 38 mm (limits 14 × 45) | **13 × 45 mm** | With 0603 parts on one side and a 4.85 mm wire-pad zone at each end, nothing smaller fits. It is at the length limit. The shell is 20 mm across and 72.8 mm long (`docs/enclosure.md`). |
+| About 12 × 38 mm (limits 14 × 45) | **13 × 45 mm** | With 0603 parts on one side and a 4.85 mm wire-pad zone at each end, nothing smaller fits. It is at the length limit. The shell is 20 mm across and 74.8 mm long (`docs/enclosure.md`). |
 | Test pads, side not stated | **On the bottom** | No room on top. They are bare copper and not fitted by JLCPCB, so assembly is still one-sided. |
 | Part names on the silkscreen | **Not printed** | No room between the parts. They are on page 1 of `board.pdf`. The silkscreen has `+ G` and `G R T` beside the wire pads on top, and the full legend underneath. |
 | Routed by script | **Autorouted** (Freerouting), three connections by hand | The board is dense. The result is saved and checked by KiCad's own rule check. |
